@@ -7,6 +7,8 @@
 
 #include "signals.h"
 
+#include <stdint.h>
+
 size_t SIGNAL_COUNT = 6;
 
 float SignalSine(float phase) { return sin(phase); }
