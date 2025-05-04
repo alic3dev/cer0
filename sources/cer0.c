@@ -36,7 +36,7 @@ float *createNoteTable(
   return noteTable;
 }
 
-size_t sizeofNoteTable(
+unsigned int sizeofNoteTable(
   unsigned char startingOctave,
   unsigned char endingOctave
 ) {

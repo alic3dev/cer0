@@ -1,11 +1,9 @@
 #ifndef signals_h
 #define signals_h
 
-#include <stdlib.h>
-
 #include "constants.h"
 
-extern size_t SIGNAL_COUNT;
+extern unsigned int SIGNAL_COUNT;
 
 typedef float (*SignalFunction)(float);
 

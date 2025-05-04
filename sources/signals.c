@@ -2,8 +2,9 @@
 
 #include <math.h>
 #include <stdint.h>
+#include <stdlib.h>
 
-size_t SIGNAL_COUNT = 6;
+unsigned int SIGNAL_COUNT = 6;
 
 float SignalSine(float phase) {
   return sin(phase);
