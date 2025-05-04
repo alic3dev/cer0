@@ -1,11 +1,6 @@
-//
-//  constants.c
-//  EXXX
-//
-//  Created by Alice Grace on 10/13/24.
-//
-
 #include "constants.h"
+
+#include <math.h>
 
 const float TWO_PI = M_PI * 2.0f;
 

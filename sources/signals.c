@@ -1,22 +1,19 @@
-//
-//  signals.c
-//  EXXX
-//
-//  Created by Alice Grace on 10/13/24.
-//
-
 #include "signals.h"
 
+#include <math.h>
 #include <stdint.h>
 
 size_t SIGNAL_COUNT = 6;
 
-float SignalSine(float phase) { return sin(phase); }
+float SignalSine(float phase) {
+  return sin(phase);
+}
 
 float SignalWhiteNoise(float phase) {
-  return ((float)(arc4random_uniform(__UINT32_MAX__)) / (float)(UINT32_MAX)) *
-             2.0f -
-         1.0f;
+  return ((
+    (float)(arc4random_uniform(__UINT32_MAX__)) / 
+    (float)(UINT32_MAX)
+  ) * 2.0f - 1.0f);
 }
 
 float SignalSawtoothUp(float phase) {
@@ -45,9 +42,20 @@ float SignalTriangle(float phase) {
   return 2.0f * (value - 0.5f);
 }
 
-char *SignalNameLookup[6] = {"Sine",        "Square",        "Triangle",
-                             "Sawtooth Up", "Sawtooth Down", "White Noise"};
+char *SignalNameLookup[6] = {
+  "Sine",
+  "Square",
+  "Triangle",
+  "Sawtooth Up",
+  "Sawtooth Down",
+  "White Noise"
+};
 
-SignalFunction SignalFunctionLookup[6] = {SignalSine,         SignalSquare,
-                                          SignalTriangle,     SignalSawtoothUp,
-                                          SignalSawtoothDown, SignalWhiteNoise};
+SignalFunction SignalFunctionLookup[6] = {
+  SignalSine,
+  SignalSquare,
+  SignalTriangle,
+  SignalSawtoothUp,
+  SignalSawtoothDown,
+  SignalWhiteNoise
+};
