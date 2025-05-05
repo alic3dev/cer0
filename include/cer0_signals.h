@@ -1,7 +1,7 @@
-#ifndef signals_h
-#define signals_h
+#ifndef __CER0_SIGNALS_H
+#define __CER0_SIGNALS_H
 
-#include "constants.h"
+#include "cer0_constants.h"
 
 #define CER0_SIGNALS_LENGTH 6
 
