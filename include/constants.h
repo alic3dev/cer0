@@ -1,23 +1,14 @@
-//
-//  constants.h
-//  EXXX
-//
-//  Created by Alice Grace on 10/13/24.
-//
-
 #ifndef constants_h
 #define constants_h
 
-#include <math.h>
+#define CER0_TWO_PI M_PI * 2.0f
 
-extern const float TWO_PI;
+#define CER0_FREQUENCY_ROOT_STANDARD 440.0f
+#define CER0_FREQUENCY_ROOT_MAGIC 432.0f
+#define CER0_FREQUENCY_ROOT_SCIENTIFIC 430.54f
 
-extern const float FREQUENCY_ROOT_STANDARD;
-extern const float FREQUENCY_ROOT_MAGIC;
-extern const float FREQUENCY_ROOT_SCIENTIFIC;
+#define CER0_OCTAVE_MINIMUM 0
+#define CER0_OCTAVE_MAXIMUM 10
+#define CER0_OCTAVE_RANGE CER0_OCTAVE_MAXIMUM - CER0_OCTAVE_MINIMUM
 
-extern const unsigned char OCTAVE_MINIMUM;
-extern const unsigned char OCTAVE_MAXIMUM;
-extern const unsigned char OCTAVE_RANGE;
-
-#endif /* constants_h */
+#endif

@@ -1,35 +1,48 @@
-//
-//  cer0.c
-//  EXXX
-//
-//  Created by Alice Grace on 10/13/24.
-//
-
 #include "cer0.h"
 
-float *createNoteTable(unsigned char startingOctave, unsigned char endingOctave,
-                       float frequency) {
-  unsigned char octaveRange = endingOctave - startingOctave;
+#include <math.h>
+#include <stdlib.h>
 
-  static float *noteTable;
+float* cer0_create_note_table(
+  unsigned char octave_starting,
+  unsigned char octave_ending,
+  float frequency
+) {
+  unsigned char octave_range = octave_ending - octave_starting;
 
-  noteTable = malloc(sizeof(float) * octaveRange * 12);
+  static float *note_table;
 
-  for (unsigned char i = startingOctave; i <= endingOctave; ++i) {
-    unsigned char octaveOffset = i * 12;
+  note_table = malloc(sizeof(float) * octave_range * 12);
 
-    for (signed char x = 0; x < 12; ++x) {
-      float noteOffset = -57.0f + (float)(x);
+  for (
+    unsigned char i = octave_starting;
+    i <= octave_ending;
+    ++i
+  ) {
+    unsigned char offset_octave = i * 12;
 
-      noteTable[octaveOffset + x] =
-          pow(2.0f, (noteOffset + (float)(octaveOffset)) / 12.0f) * frequency;
+    for (
+      signed char x = 0;
+      x < 12;
+      ++x
+    ) {
+      float offset_note = -57.0f + (float)(x);
+
+      note_table[offset_octave + x] = (
+          pow(
+            2.0f,
+            (offset_note + (float)(offset_octave)) / 12.0f
+          ) * frequency
+      );
     }
   }
 
-  return noteTable;
+  return note_table;
 }
 
-size_t sizeofNoteTable(unsigned char startingOctave,
-                       unsigned char endingOctave) {
-  return (endingOctave - startingOctave) * 12;
+unsigned int cer0_sizeof_note_table(
+  unsigned char octave_starting,
+  unsigned char octave_ending
+) {
+  return (octave_ending - octave_starting) * 12;
 }
