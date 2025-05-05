@@ -4,8 +4,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-unsigned int SIGNAL_COUNT = 6;
-
 float SignalSine(float phase) {
   return sin(phase);
 }
@@ -18,11 +16,11 @@ float SignalWhiteNoise(float phase) {
 }
 
 float SignalSawtoothUp(float phase) {
-  return 1.0f - 2.0f * (phase * (1.0f / TWO_PI));
+  return 1.0f - 2.0f * (phase * (1.0f / CER0_TWO_PI));
 }
 
 float SignalSawtoothDown(float phase) {
-  return (2.0f * (phase * (1.0f / TWO_PI))) - 1.0f;
+  return (2.0f * (phase * (1.0f / CER0_TWO_PI))) - 1.0f;
 }
 
 float SignalSquare(float phase) {
@@ -34,7 +32,7 @@ float SignalSquare(float phase) {
 }
 
 float SignalTriangle(float phase) {
-  float value = (2.0f * (phase * (1.0f / TWO_PI))) - 1.0f;
+  float value = (2.0f * (phase * (1.0f / CER0_TWO_PI))) - 1.0f;
 
   if (value < 0.0f) {
     value = -value;
@@ -43,7 +41,7 @@ float SignalTriangle(float phase) {
   return 2.0f * (value - 0.5f);
 }
 
-char *SignalNameLookup[6] = {
+char *SignalNameLookup[CER0_SIGNALS_LENGTH] = {
   "Sine",
   "Square",
   "Triangle",
@@ -52,7 +50,7 @@ char *SignalNameLookup[6] = {
   "White Noise"
 };
 
-SignalFunction SignalFunctionLookup[6] = {
+SignalFunction SignalFunctionLookup[CER0_SIGNALS_LENGTH] = {
   SignalSine,
   SignalSquare,
   SignalTriangle,

@@ -3,7 +3,7 @@
 
 #include "constants.h"
 
-extern unsigned int SIGNAL_COUNT;
+#define CER0_SIGNALS_LENGTH 6
 
 typedef float (*SignalFunction)(float);
 
@@ -14,7 +14,7 @@ float SignalSawtoothDown(float);
 float SignalSquare(float);
 float SignalTriangle(float);
 
-extern char *SignalNameLookup[6];
-extern SignalFunction SignalFunctionLookup[6];
+extern char *SignalNameLookup[CER0_SIGNALS_LENGTH];
+extern SignalFunction SignalFunctionLookup[CER0_SIGNALS_LENGTH];
 
 #endif

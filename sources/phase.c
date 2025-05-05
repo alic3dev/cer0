@@ -16,12 +16,12 @@ float PhaseAdvance(
 ) {
   phaseValue += phaseIncrement;
 
-  if (phaseValue >= TWO_PI) {
-    phaseValue -= TWO_PI;
+  if (phaseValue >= CER0_TWO_PI) {
+    phaseValue -= CER0_TWO_PI;
   }
 
   if (phaseValue < 0.0f) {
-    phaseValue += TWO_PI;
+    phaseValue += CER0_TWO_PI;
   }
 
   return phaseValue;
