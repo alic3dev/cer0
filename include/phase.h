@@ -3,7 +3,7 @@
 
 #include "constants.h"
 
-float PhaseGetIncrement(float, float);
-float PhaseAdvance(float, float);
+float cer0_phase_get_increment(float, float);
+float cer0_phase_advance(float, float);
 
 #endif

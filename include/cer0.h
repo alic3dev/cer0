@@ -5,13 +5,13 @@
 #include "phase.h"
 #include "signals.h"
 
-float *createNoteTable(
+float *cer0_create_note_table(
   unsigned char,
   unsigned char,
   float
 );
 
-unsigned int sizeofNoteTable(
+unsigned int cer0_sizeof_note_table(
   unsigned char,
   unsigned char
 );
