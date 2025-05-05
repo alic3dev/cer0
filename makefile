@@ -31,4 +31,3 @@ ${DIRECTORY_OBJECTS}:
 clean:
 	-rm -r ${DIRECTORY_LIBRARY}
 	-rm -r ${DIRECTORY_OBJECTS} 
-
