@@ -1,5 +1,5 @@
-#ifndef constants_h
-#define constants_h
+#ifndef __CER0_CONSTANTS_H
+#define __CER0_CONSTANTS_H
 
 #define CER0_TWO_PI M_PI * 2.0f
 

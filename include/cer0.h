@@ -1,9 +1,9 @@
-#ifndef cer0_h
-#define cer0_h
+#ifndef __CER0_H
+#define __CER0_H
 
-#include "constants.h"
-#include "phase.h"
-#include "signals.h"
+#include "cer0_constants.h"
+#include "cer0_phase.h"
+#include "cer0_signals.h"
 
 float *cer0_create_note_table(
   unsigned char,
