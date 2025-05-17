@@ -34,7 +34,8 @@ struct cer0_audio_output {
 
 unsigned char cer0_audio_output_initialize(
   struct cer0_audio_output*,
-  cer0_audio_output_io_proc
+  cer0_audio_output_io_proc,
+  void*
 );
 
 unsigned char cer0_audio_output_cleanup(
