@@ -11,7 +11,8 @@
 
 unsigned char cer0_audio_output_initialize(
   struct cer0_audio_output* audio_output,
-  cer0_audio_output_io_proc io_proc
+  cer0_audio_output_io_proc io_proc,
+  void* data_io_proc
 ) {
   static AudioObjectPropertyAddress audio_object_property_address = {
     kAudioHardwarePropertyDefaultSystemOutputDevice,
@@ -56,7 +57,7 @@ unsigned char cer0_audio_output_initialize(
   OSStatus status_create_io_proc_id = AudioDeviceCreateIOProcID(
     audio_output->device,
     audio_output->io_proc,
-    (void *)0,
+    data_io_proc,
     &audio_output->io_proc_id
   );
 
