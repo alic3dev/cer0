@@ -21,7 +21,8 @@ float* cer0_create_note_table(
     i <= octave_ending;
     ++i
   ) {
-    unsigned char offset_octave = (i - octave_starting) * 12;
+    unsigned char offset_octave = octave_starting * 12;
+    unsigned char offset_octave_table = (i - octave_starting) * 12;
 
     for (
       unsigned char x = 0;
@@ -30,7 +31,7 @@ float* cer0_create_note_table(
     ) {
       float offset_note = -57.0f + (float)(x);
 
-      note_table[offset_octave + x] = (
+      note_table[offset_octave_table + x] = (
           powf(
             2.0f,
             (offset_note + (float)(offset_octave)) / 12.0f
