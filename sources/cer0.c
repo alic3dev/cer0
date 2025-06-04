@@ -8,7 +8,7 @@ float* cer0_create_note_table(
   unsigned char octave_ending,
   float frequency
 ) {
-  unsigned char octave_range = octave_ending - octave_starting;
+  unsigned char octave_range = (octave_ending - octave_starting) + 1;
 
   static float *note_table;
 
