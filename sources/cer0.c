@@ -19,7 +19,7 @@ float* cer0_create_note_table(
     i <= octave_ending;
     ++i
   ) {
-    unsigned char offset_octave = i * 12;
+    unsigned char offset_octave = (i - octave_starting) * 12;
 
     for (
       signed char x = 0;
