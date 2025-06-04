@@ -10,9 +10,11 @@ float* cer0_create_note_table(
 ) {
   unsigned char octave_range = (octave_ending - octave_starting) + 1;
 
-  static float *note_table;
+  static float* note_table;
 
-  note_table = malloc(sizeof(float) * octave_range * 12);
+  note_table = malloc
+    (sizeof(float) * octave_range * 12
+  );
 
   for (
     unsigned char i = octave_starting;
@@ -22,7 +24,7 @@ float* cer0_create_note_table(
     unsigned char offset_octave = (i - octave_starting) * 12;
 
     for (
-      signed char x = 0;
+      unsigned char x = 0;
       x < 12;
       ++x
     ) {
