@@ -26,3 +26,4 @@ float cer0_phase_advance(
 
   return value_phase;
 }
+
