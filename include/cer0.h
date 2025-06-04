@@ -1,9 +1,10 @@
 #ifndef __CER0_H
 #define __CER0_H
 
-#include "cer0_constants.h"
-#include "cer0_phase.h"
-#include "cer0_signals.h"
+#include <cer0_audio_output.h>
+#include <cer0_constants.h>
+#include <cer0_phase.h>
+#include <cer0_signals.h>
 
 float *cer0_create_note_table(
   unsigned char,
