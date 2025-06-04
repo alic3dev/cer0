@@ -29,7 +29,7 @@ float* cer0_create_note_table(
       float offset_note = -57.0f + (float)(x);
 
       note_table[offset_octave + x] = (
-          pow(
+          powf(
             2.0f,
             (offset_note + (float)(offset_octave)) / 12.0f
           ) * frequency
