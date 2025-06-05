@@ -1,14 +1,12 @@
-#ifndef __CER0_CONSTANTS_H
-#define __CER0_CONSTANTS_H
+#ifndef __cer0_constants_h
+#define __cer0_constants_h
 
-#define CER0_TWO_PI M_PI * 2.0f
+#include <math.h>
 
-#define CER0_FREQUENCY_ROOT_STANDARD 440.0f
-#define CER0_FREQUENCY_ROOT_MAGIC 432.0f
-#define CER0_FREQUENCY_ROOT_SCIENTIFIC 430.54f
+#define cer0_two_pi (M_PI * 2.0f)
 
-#define CER0_OCTAVE_MINIMUM 0
-#define CER0_OCTAVE_MAXIMUM 10
-#define CER0_OCTAVE_RANGE CER0_OCTAVE_MAXIMUM - CER0_OCTAVE_MINIMUM
+#define cer0_frequency_root_standard 440.0f
+#define cer0_frequency_root_magic 432.0f
+#define cer0_frequency_root_scientific 430.54f
 
 #endif

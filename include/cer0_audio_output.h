@@ -1,5 +1,5 @@
-#ifndef __CER0_AUDIO_OUTPUT
-#define __CER0_AUDIO_OUTPUT
+#ifndef __cer0_audio_output
+#define __cer0_audio_output
 
 #include <CoreAudio/CoreAudio.h>
 
@@ -10,8 +10,8 @@
 
 #include <sys/param.h>
 
-#define CER0_AUDIO_OUTPUT_CHANNEL_LEFT = 0;
-#define CER0_AUDIO_OUTPUT_CHANNEL_RIGHT = 1;
+#define cer0_audio_output_channel_left = 0;
+#define cer0_audio_output_channel_right = 1;
 
 typedef OSStatus (*cer0_audio_output_io_proc)(
   AudioObjectID,
@@ -38,7 +38,7 @@ unsigned char cer0_audio_output_initialize(
   void*
 );
 
-unsigned char cer0_audio_output_cleanup(
+unsigned char cer0_audio_output_destroy(
   struct cer0_audio_output*
 );
 

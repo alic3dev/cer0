@@ -9,5 +9,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - name: continuous_integration_build_make
-        run: make
+      - name: continuous_integration_build_make_cer0
+        run: make cer0
+      - name: continuous_integration_build_make_cer0_tools
+        run: make tools
