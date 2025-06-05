@@ -1,33 +1,52 @@
-NAME=cer0
+name=cer0
 
-DIRECTORY_INCLUDE=include
-DIRECTORY_LIBRARY=library
-DIRECTORY_OBJECTS=objects
-DIRECTORY_SOURCES=sources
+directory_include=include
+directory_library=library
+directory_objects=objects
+directory_sources=sources
+directory_tools=tools
 
-FILE_LIBRARY=${DIRECTORY_LIBRARY}/${NAME}.o
+file_library=${directory_library}/${name}.o
 
-FILES_SOURCES=${wildcard ${DIRECTORY_SOURCES}/*.c}
-FILES_OBJECTS=${patsubst ${DIRECTORY_SOURCES}/%.c,${DIRECTORY_OBJECTS}/%.o,${FILES_SOURCES}}
+files_sources=${wildcard ${directory_sources}/*.c}
+files_objects=${patsubst ${directory_sources}/%.c,${directory_objects}/%.o,${files_sources}}
 
-CC=clang
-C_FLAGS=-O3 -I${DIRECTORY_INCLUDE}
+cc=clang
+c_flags=-O3 -I${directory_include}
 
-LD=ld
-LD_FLAGS=
+ld=ld
+ld_flags=
 
-${FILE_LIBRARY}: ${FILES_OBJECTS} ${DIRECTORY_LIBRARY}
-	${LD} ${LD_FLAGS} -r ${FILES_OBJECTS} -o $@
+all: ${name} tools
 
-${DIRECTORY_OBJECTS}/%.o: ${DIRECTORY_SOURCES}/%.c ${DIRECTORY_OBJECTS}
-	${CC} ${C_FLAGS} -c $< -o $@
+tools: ${file_library} .force
+	cd ${directory_tools} && make all
 
-${DIRECTORY_LIBRARY}:
-	mkdir -p ${DIRECTORY_LIBRARY}
+${name}: ${file_library}
 
-${DIRECTORY_OBJECTS}:
-	mkdir -p ${DIRECTORY_OBJECTS}
+${file_library}: ${files_objects} ${directory_library}
+	${ld} ${ld_flags} -r ${files_objects} -o $@
 
-clean:
-	-rm -r ${DIRECTORY_LIBRARY}
-	-rm -r ${DIRECTORY_OBJECTS} 
+${directory_objects}/%.o: ${directory_sources}/%.c ${directory_objects}
+	${cc} ${c_flags} -c $< -o $@
+
+${directory_library}:
+	mkdir -p ${directory_library}
+
+${directory_objects}:
+	mkdir -p ${directory_objects}
+
+clean_all: clean clean_tools
+
+clean: clean_library clean_objects
+
+clean_library:
+	-rm -r ${directory_library}
+
+clean_objects:
+	-rm -r ${directory_objects} 
+
+clean_tools:
+	cd ${directory_tools} && make clean_all
+
+.force:

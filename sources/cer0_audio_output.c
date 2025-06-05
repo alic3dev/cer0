@@ -1,4 +1,4 @@
-#include "cer0_audio_output.h"
+#include <cer0_audio_output.h>
 
 #include <CoreAudio/CoreAudio.h>
 
@@ -90,7 +90,7 @@ unsigned char cer0_audio_output_initialize(
   return audio_output->io_proc_id == (void*)0 ? 1 : 0;
 }
 
-unsigned char cer0_audio_output_cleanup(
+unsigned char cer0_audio_output_destroy(
   struct cer0_audio_output* audio_output
 ) {
   unsigned char result = 0;
