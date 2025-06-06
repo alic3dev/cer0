@@ -1,5 +1,5 @@
-#ifndef __cer0_signals_h
-#define __cer0_signals_h
+#ifndef __cer0_signal_h
+#define __cer0_signal_h
 
 #include <cer0_constants.h>
 
