@@ -1,5 +1,5 @@
-#ifndef __cer0_signals_h
-#define __cer0_signals_h
+#ifndef __cer0_signal_h
+#define __cer0_signal_h
 
 #include <cer0_constants.h>
 
@@ -11,6 +11,15 @@
 #define cer0_name_signal_square "Square"
 #define cer0_name_signal_triangle "Triangle"
 #define cer0_name_signal_white_noise "White Noise"
+
+enum cer0_signal {
+  sawtooth_down,
+  sawtooth_up,
+  sine,
+  square,
+  triangle,
+  white_noise
+};
 
 typedef float (*cer0_signal_function)(float);
 

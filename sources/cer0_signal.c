@@ -1,4 +1,4 @@
-#include <cer0_signals.h>
+#include <cer0_signal.h>
 #include <cer0_constants.h>
 
 #include <math.h>
