@@ -12,6 +12,15 @@
 #define cer0_name_signal_triangle "Triangle"
 #define cer0_name_signal_white_noise "White Noise"
 
+enum cer0_signal {
+  sawtooth_down,
+  sawtooth_up,
+  sine,
+  square,
+  triangle,
+  white_noise
+};
+
 typedef float (*cer0_signal_function)(float);
 
 float cer0_signal_sine(float);
