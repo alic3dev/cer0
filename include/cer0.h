@@ -4,6 +4,7 @@
 #include <cer0_amplitude.h>
 #include <cer0_audio_output.h>
 #include <cer0_constants.h>
+#include <cer0_frequency_root.h>
 #include <cer0_note_table.h>
 #include <cer0_octave_range.h>
 #include <cer0_oscillator.h>
