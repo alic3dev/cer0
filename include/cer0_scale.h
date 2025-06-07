@@ -1,0 +1,118 @@
+#ifndef __cer0_scale_h
+#define __cer0_scale_h
+
+#define cer0_scale_length_acoustic 7
+#define cer0_scale_length_lydian_dominant 7
+#define cer0_scale_length_aeolian_mode 7
+#define cer0_scale_length_natural_minor 7
+#define cer0_scale_length_algerian 11
+#define cer0_scale_length_altered 7
+#define cer0_scale_length_super_locrian 7
+#define cer0_scale_length_augmented 6
+#define cer0_scale_length_bebop_dominant 8
+#define cer0_scale_length_blues 6
+#define cer0_scale_length_chromatic 12
+#define cer0_scale_length_dorian_mode 7
+#define cer0_scale_length_double_harmonic 7
+#define cer0_scale_length_enigmatic 7
+#define cer0_scale_length_flamenco_mode 7
+#define cer0_scale_length_gypsy 7
+#define cer0_scale_length_half_diminished 7
+#define cer0_scale_length_harmonic_major 7
+#define cer0_scale_length_harmonic_minor 7
+#define cer0_scale_length_hirajoshi 5
+#define cer0_scale_length_hungarian_gypsy 7
+#define cer0_scale_length_hungarian_minor 7
+#define cer0_scale_length_hungarian_major 7
+#define cer0_scale_length_in 5
+#define cer0_scale_length_insen 5
+#define cer0_scale_length_ionian_mode 7
+#define cer0_scale_length_major 7
+#define cer0_scale_length_istrian 6
+#define cer0_scale_length_iwato 5
+#define cer0_scale_length_locrian_mode 7
+#define cer0_scale_length_locrian_6 7
+#define cer0_scale_length_lydian_augmented 7
+#define cer0_scale_length_lydian_diminished 7
+#define cer0_scale_length_lydian_mode 7
+#define cer0_scale_length_major_bebop 8
+#define cer0_scale_length_major_locrian 7
+#define cer0_scale_length_major_pentatonic 5
+#define cer0_scale_length_melodic_minor_ascending 7
+#define cer0_scale_length_melodic_minor_descending 7
+#define cer0_scale_length_minor_pentatonic 5
+#define cer0_scale_length_mixolydian_mode 7
+#define cer0_scale_length_adonai_malakh_mode 7
+#define cer0_scale_length_neapolitan_major 7
+#define cer0_scale_length_neapolitan_minor 7
+#define cer0_scale_length_octatonic_minor 8
+#define cer0_scale_length_octatonic_diminished 8
+#define cer0_scale_length_persian 7
+#define cer0_scale_length_phrygian_dominant 7
+#define cer0_scale_length_phrygian_mode 7
+#define cer0_scale_length_prometheus 6
+#define cer0_scale_length_scale_of_harmonics 6
+#define cer0_scale_length_tritone 6
+#define cer0_scale_length_two_semitone_tritone 6
+#define cer0_scale_length_ukrainian_dorian 7
+#define cer0_scale_length_whole_tone 6
+#define cer0_scale_length_yo 5
+
+extern const unsigned char cer0_scale_notes_acoustic[cer0_scale_length_acoustic];
+extern const unsigned char cer0_scale_notes_lydian_dominant[cer0_scale_length_lydian_dominant];
+extern const unsigned char cer0_scale_notes_aeolian_mode[cer0_scale_length_aeolian_mode];
+extern const unsigned char cer0_scale_notes_natural_minor[cer0_scale_length_natural_minor];
+extern const unsigned char cer0_scale_notes_algerian[cer0_scale_length_algerian];
+extern const unsigned char cer0_scale_notes_altered[cer0_scale_length_altered];
+extern const unsigned char cer0_scale_notes_super_locrian[cer0_scale_length_super_locrian];
+extern const unsigned char cer0_scale_notes_augmented[cer0_scale_length_augmented];
+extern const unsigned char cer0_scale_notes_bebop_dominant[cer0_scale_length_bebop_dominant];
+extern const unsigned char cer0_scale_notes_blues[cer0_scale_length_blues];
+extern const unsigned char cer0_scale_notes_chromatic[cer0_scale_length_chromatic];
+extern const unsigned char cer0_scale_notes_dorian_mode[cer0_scale_length_dorian_mode];
+extern const unsigned char cer0_scale_notes_double_harmonic[cer0_scale_length_double_harmonic];
+extern const unsigned char cer0_scale_notes_enigmatic[cer0_scale_length_enigmatic];
+extern const unsigned char cer0_scale_notes_flamenco_mode[cer0_scale_length_flamenco_mode];
+extern const unsigned char cer0_scale_notes_gypsy[cer0_scale_length_gypsy];
+extern const unsigned char cer0_scale_notes_half_diminished[cer0_scale_length_half_diminished];
+extern const unsigned char cer0_scale_notes_harmonic_major[cer0_scale_length_harmonic_major];
+extern const unsigned char cer0_scale_notes_harmonic_minor[cer0_scale_length_harmonic_minor];
+extern const unsigned char cer0_scale_notes_hirajoshi[cer0_scale_length_hirajoshi];
+extern const unsigned char cer0_scale_notes_hungarian_gypsy[cer0_scale_length_hungarian_gypsy];
+extern const unsigned char cer0_scale_notes_hungarian_minor[cer0_scale_length_hungarian_minor];
+extern const unsigned char cer0_scale_notes_hungarian_major[cer0_scale_length_hungarian_major];
+extern const unsigned char cer0_scale_notes_in[cer0_scale_length_in];
+extern const unsigned char cer0_scale_notes_insen[cer0_scale_length_insen];
+extern const unsigned char cer0_scale_notes_ionian_mode[cer0_scale_length_ionian_mode];
+extern const unsigned char cer0_scale_notes_major[cer0_scale_length_major];
+extern const unsigned char cer0_scale_notes_istrian[cer0_scale_length_istrian];
+extern const unsigned char cer0_scale_notes_iwato[cer0_scale_length_iwato];
+extern const unsigned char cer0_scale_notes_locrian_mode[cer0_scale_length_locrian_mode];
+extern const unsigned char cer0_scale_notes_locrian_6[cer0_scale_length_locrian_6];
+extern const unsigned char cer0_scale_notes_lydian_augmented[cer0_scale_length_lydian_augmented];
+extern const unsigned char cer0_scale_notes_lydian_diminished[cer0_scale_length_lydian_diminished];
+extern const unsigned char cer0_scale_notes_lydian_mode[cer0_scale_length_lydian_mode];
+extern const unsigned char cer0_scale_notes_major_bebop[cer0_scale_length_major_bebop];
+extern const unsigned char cer0_scale_notes_major_locrian[cer0_scale_length_major_locrian];
+extern const unsigned char cer0_scale_notes_major_pentatonic[cer0_scale_length_major_pentatonic];
+extern const unsigned char cer0_scale_notes_melodic_minor_ascending[cer0_scale_length_melodic_minor_ascending];
+extern const unsigned char cer0_scale_notes_melodic_minor_descending[cer0_scale_length_melodic_minor_descending];
+extern const unsigned char cer0_scale_notes_minor_pentatonic[cer0_scale_length_minor_pentatonic];
+extern const unsigned char cer0_scale_notes_mixolydian_mode[cer0_scale_length_mixolydian_mode];
+extern const unsigned char cer0_scale_notes_adonai_malakh_mode[cer0_scale_length_adonai_malakh_mode];
+extern const unsigned char cer0_scale_notes_neapolitan_major[cer0_scale_length_neapolitan_major];
+extern const unsigned char cer0_scale_notes_neapolitan_minor[cer0_scale_length_neapolitan_minor];
+extern const unsigned char cer0_scale_notes_octatonic_minor[cer0_scale_length_octatonic_minor];
+extern const unsigned char cer0_scale_notes_octatonic_diminished[cer0_scale_length_octatonic_diminished];
+extern const unsigned char cer0_scale_notes_persian[cer0_scale_length_persian];
+extern const unsigned char cer0_scale_notes_phrygian_dominant[cer0_scale_length_phrygian_dominant];
+extern const unsigned char cer0_scale_notes_phrygian_mode[cer0_scale_length_phrygian_mode];
+extern const unsigned char cer0_scale_notes_prometheus[cer0_scale_length_prometheus];
+extern const unsigned char cer0_scale_notes_scale_of_harmonics[cer0_scale_length_scale_of_harmonics];
+extern const unsigned char cer0_scale_notes_tritone[cer0_scale_length_tritone];
+extern const unsigned char cer0_scale_notes_two_semitone_tritone[cer0_scale_length_two_semitone_tritone];
+extern const unsigned char cer0_scale_notes_ukrainian_dorian[cer0_scale_length_ukrainian_dorian];
+extern const unsigned char cer0_scale_notes_whole_tone[cer0_scale_length_whole_tone];
+extern const unsigned char cer0_scale_notes_yo[cer0_scale_length_yo];
+
+#endif
