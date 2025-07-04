@@ -8,8 +8,17 @@ jobs:
   continuous_integration_build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: checkout_cer0
+        uses: actions/checkout@v4
+        with:
+          path: cer0
+      - name: checkout_clic3
+        uses: actions/checkout@v4
+        with:
+          path: clic3
+      - name: continuous_integration_build_make_clic3
+        run: cd clic3 && make library/clic3.o
       - name: continuous_integration_build_make_cer0
-        run: make cer0
+        run: cd cer0 && make cer0
       - name: continuous_integration_build_make_cer0_tools
-        run: make tools
+        run: cd cer0 && make tools
