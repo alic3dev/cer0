@@ -1,5 +1,8 @@
 name=cer0
 
+directory_clice=../clic3
+directory_clice_include=${directory_clice}/include
+directory_clice_library=${directory_clice}/library
 directory_include=include
 directory_library=library
 directory_objects=objects
@@ -7,15 +10,19 @@ directory_sources=sources
 directory_tools=tools
 
 file_library=${directory_library}/${name}.o
+file_library_clice=${directory_clice_library}/clic3.o
 
 files_sources=${wildcard ${directory_sources}/*.c}
 files_objects=${patsubst ${directory_sources}/%.c,${directory_objects}/%.o,${files_sources}}
 
 cc=clang
-c_flags=-O3 -I${directory_include}
+c_flags=-O3 -I${directory_include} -I${directory_clice_include}
 
 ld=ld
 ld_flags=
+
+strip=strip
+strip_flags=-x
 
 all: ${name} tools
 
@@ -25,7 +32,8 @@ tools: ${file_library} .force
 ${name}: ${file_library}
 
 ${file_library}: ${files_objects} ${directory_library}
-	${ld} ${ld_flags} -r ${files_objects} -o $@
+	${ld} ${ld_flags} -r ${files_objects} ${file_library_clice} -o ${file_library}
+	${strip} ${strip_flags} ${file_library}
 
 ${directory_objects}/%.o: ${directory_sources}/%.c ${directory_objects}
 	${cc} ${c_flags} -c $< -o $@
