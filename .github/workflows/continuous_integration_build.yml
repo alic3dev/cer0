@@ -16,6 +16,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: clic3
+          repository: alic3dev/clic3
       - name: continuous_integration_build_make_clic3
         run: cd clic3 && make library/clic3.o
       - name: continuous_integration_build_make_cer0
