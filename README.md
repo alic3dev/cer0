@@ -4,6 +4,10 @@ a c reimplementation of [zer0](https://github.com/alic3dev/zer0)
 
 ## usage
 
+### dependencies
+
+- [clic3](https://github.com/alic3dev/clic3): library->{`clic3.o`}
+
 ### include
 
 #### c: [.c | .h]
@@ -21,7 +25,7 @@ gcc -I${cer0_directory}include
 ### object
 
 ```zsh
-gcc ${cer0_directory}/library/cer0.o
+gcc ${cer0_directory}/library/cer0.o ${clic3_directory}/library/clic3.o
 ```
 
 ### framework
@@ -38,7 +42,7 @@ gcc -framework CoreAudio
 #### binary
 
 ```zsh
-gcc -framework CoreAudio -I${cer0_directory}/include ${cer0_directory}/library/cer0.o source.c -o output
+gcc -framework CoreAudio -I${cer0_directory}/include ${cer0_directory}/library/cer0.o ${clic3_directory}/library/clic3.o source.c -o output
 ```
 
 #### object

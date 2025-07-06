@@ -9,7 +9,11 @@ directory_cer0=../..
 directory_cer0_include=${directory_cer0}/include
 directory_cer0_library=${directory_cer0}/library
 
+directory_clic3=../../../clic3
+directory_clic3_library=${directory_clic3}/library
+
 file_cer0_library=${directory_cer0_library}/cer0.o
+file_clic3_library=${directory_clic3_library}/clic3.o
 
 file_output=${directory_output}/${name}
 
@@ -18,18 +22,21 @@ files_objects=${patsubst ${directory_sources}/%.c,${directory_objects}/%.o,${fil
 
 cc=clang
 c_flags=-O3 -I${directory_include} -I${directory_cer0_include}
-c_flags_output=-framework CoreAudio 
+c_flags_output=-framework CoreAudio
 
 ${note_table_print}: ${file_output}
 
-${file_output}: ${files_objects} ${file_cer0_library} ${directory_output}
-	${cc} ${c_flags} ${c_flags_output} ${files_objects} ${file_cer0_library} -o ${file_output}
+${file_output}: ${files_objects} ${file_cer0_library} ${file_clic3_library} ${directory_output}
+	${cc} ${c_flags} ${c_flags_output} ${files_objects} ${file_cer0_library} ${file_clic3_library} -o ${file_output}
 
 ${directory_objects}/%.o: ${directory_sources}/%.c ${directory_objects}
 	${cc} ${c_flags} -c $< -o $@
 
 ${file_cer0_library}:
 	cd ${directory_cer0} && make
+
+${file_clic3_library}:
+	cd ${directory_clic3} && make
 
 ${directory_objects}:
 	mkdir ${directory_objects}
@@ -40,7 +47,7 @@ ${directory_output}:
 clean: clean_objects clean_output
 
 clean_objects:
-	-rm -r ${directory_objects}
+	-rm -r ${directory_objects} 2> /dev/null
 
 clean_output:
-	-rm ${file_output}
+	-rm ${file_output} 2> /dev/null

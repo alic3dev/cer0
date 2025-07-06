@@ -24,15 +24,15 @@ ld_flags=
 strip=strip
 strip_flags=-x
 
+${name}: ${file_library}
+
 all: ${name} tools
 
 tools: ${file_library} .force
 	cd ${directory_tools} && make all
 
-${name}: ${file_library}
-
 ${file_library}: ${files_objects} ${directory_library}
-	${ld} ${ld_flags} -r ${files_objects} ${file_library_clice} -o ${file_library}
+	${ld} ${ld_flags} -r ${files_objects} -o ${file_library}
 	${strip} ${strip_flags} ${file_library}
 
 ${directory_objects}/%.o: ${directory_sources}/%.c ${directory_objects}
@@ -49,10 +49,10 @@ clean_all: clean clean_tools
 clean: clean_library clean_objects
 
 clean_library:
-	-rm -r ${directory_library}
+	-rm -r ${directory_library} 2> /dev/null
 
 clean_objects:
-	-rm -r ${directory_objects} 
+	-rm -r ${directory_objects} 2> /dev/null
 
 clean_tools:
 	cd ${directory_tools} && make clean_all
