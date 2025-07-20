@@ -74,6 +74,32 @@ void cer0_synthesizer_oscillator_frequency_set(
   );
 }
 
+void cer0_synthesizer_signal_set(
+  struct cer0_synthesizer* synthesizer,
+  enum cer0_signal signal
+) {
+  for_oscillators {
+    cer0_synthesizer_oscillator_signal_set(
+      synthesizer,
+      index_oscillator,
+      signal
+    );
+  }
+}
+
+
+void cer0_synthesizer_oscillator_signal_set(
+  struct cer0_synthesizer* synthesizer,
+  unsigned int index_oscillator,
+  enum cer0_signal signal
+) {
+  cer0_oscillator_signal_set(
+    &synthesizer->oscillators[index_oscillator],
+    signal
+  );
+}
+
+
 void cer0_synthesizer_sample_rate_set(
   struct cer0_synthesizer* synthesizer,
   float sample_rate
