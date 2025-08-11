@@ -3,13 +3,6 @@
 
 #include <CoreAudio/CoreAudio.h>
 
-#include <IOKit/IOKitLib.h>
-#include <IOKit/hid/IOHIDKeys.h>
-#include <IOKit/hid/IOHIDManager.h>
-#include <IOKit/usb/USBSpec.h>
-
-#include <sys/param.h>
-
 #define cer0_audio_output_channel_left = 0;
 #define cer0_audio_output_channel_right = 1;
 

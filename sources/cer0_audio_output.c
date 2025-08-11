@@ -2,11 +2,6 @@
 
 #include <CoreAudio/CoreAudio.h>
 
-#include <IOKit/IOKitLib.h>
-#include <IOKit/hid/IOHIDKeys.h>
-#include <IOKit/hid/IOHIDManager.h>
-#include <IOKit/usb/USBSpec.h>
-
 #include <sys/param.h>
 
 unsigned char cer0_audio_output_initialize(
