@@ -9,11 +9,11 @@
 typedef OSStatus (*cer0_audio_output_io_proc)(
   AudioObjectID,
   const AudioTimeStamp*,
-  const AudioBufferList *,
-  const AudioTimeStamp *,
-  AudioBufferList *,
-  const AudioTimeStamp *,
-  void *
+  const AudioBufferList*,
+  const AudioTimeStamp*,
+  AudioBufferList*,
+  const AudioTimeStamp*,
+  void*
 );
 
 struct cer0_audio_output {
