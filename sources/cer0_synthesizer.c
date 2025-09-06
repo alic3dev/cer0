@@ -124,12 +124,15 @@ float cer0_synthesizer_poll(
       value_output + (
         cer0_oscillator_poll(
           &synthesizer->oscillators[index_oscillator]
-        ) / synthesizer->length_oscillators
+        ) / (float) synthesizer->length_oscillators
       )
     );
   }
 
-  return value_output;
+  return (
+    value_output *
+    synthesizer->amplitude
+  );
 }
 
 void cer0_synthesizer_destroy(
