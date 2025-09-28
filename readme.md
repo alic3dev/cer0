@@ -1,6 +1,6 @@
 # cer0
 
-[zer0](https://github.com/alic3dev/zer0):c_implementation
+c:implementation.of->{[`zer0`](https://github.com/alic3dev/zer0)};
 
 ## usage
 
@@ -25,7 +25,7 @@ gcc -I${cer0_directory}include
 ### object
 
 ```zsh
-gcc ${cer0_directory}/library/cer0.o ${clic3_directory}/library/clic3.o
+gcc ${directory_cer0}/library/cer0.o ${directory_clic3}/library/clic3.o
 ```
 
 ### framework
@@ -41,13 +41,13 @@ gcc -framework CoreAudio
 #### executable
 
 ```zsh
-gcc -framework CoreAudio -I${cer0_directory}/include ${cer0_directory}/library/cer0.o ${clic3_directory}/library/clic3.o source.c -o output
+gcc -framework CoreAudio -I${directory_cer0}/include ${directory_cer0}/library/cer0.o ${directory_clic3}/library/clic3.o source.c -o output
 ```
 
 #### object
 
 ```zsh
-gcc -I${cer0_directory}/include -c source.c -o source.o
+gcc -I${directory_cer0}/include -c source.c -o source.o
 ```
 
 ## development
