@@ -30,7 +30,7 @@ float cer0_signal_sawtooth_down(float);
 float cer0_signal_square(float);
 float cer0_signal_triangle(float);
 
-extern char *cer0_signal_name_lookup[cer0_length_signals];
+extern char* cer0_signal_name_lookup[cer0_length_signals];
 extern cer0_signal_function cer0_signal_function_lookup[cer0_length_signals];
 
 #endif
