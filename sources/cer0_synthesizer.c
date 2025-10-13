@@ -21,7 +21,8 @@ void cer0_synthesizer_initialize(
 
   synthesizer->length_oscillators = 0;
   synthesizer->oscillators = malloc(
-    sizeof(struct cer0_oscillator) * synthesizer->length_oscillators
+    sizeof(struct cer0_oscillator) *
+    synthesizer->length_oscillators
   );
 
   synthesizer->sample_rate = sample_rate;
@@ -37,11 +38,14 @@ void cer0_synthesizer_oscillator_add(
 
   synthesizer->oscillators = realloc(
     synthesizer->oscillators,
-    sizeof(struct cer0_oscillator) * synthesizer->length_oscillators
+    sizeof(struct cer0_oscillator) *
+    synthesizer->length_oscillators
   );
 
   cer0_oscillator_initialize(
-    &synthesizer->oscillators[synthesizer->length_oscillators - 1],
+    &synthesizer->oscillators[
+      synthesizer->length_oscillators - 1
+    ],
     synthesizer->sample_rate,
     synthesizer->frequency,
     signal
