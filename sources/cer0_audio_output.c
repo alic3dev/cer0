@@ -111,12 +111,12 @@ unsigned char cer0_audio_output_destroy(
         status_audio_device_destroy_io_proc_id
       );
     }
-    
+
     result = (
       result + 1
     );
   }
-  
+
   OSStatus status_audio_device_stop = AudioDeviceStop(
     audio_output->device,
     audio_output->io_proc_id

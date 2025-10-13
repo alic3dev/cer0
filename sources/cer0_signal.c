@@ -15,7 +15,7 @@ float cer0_signal_white_noise(
   float phase
 ) {
   return ((
-    (float)(arc4random_uniform(__UINT32_MAX__)) / 
+    (float)(arc4random_uniform(__UINT32_MAX__)) /
     (float)(UINT32_MAX)
   ) * 2.0f - 1.0f);
 }
