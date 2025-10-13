@@ -91,7 +91,6 @@ void cer0_synthesizer_signal_set(
   }
 }
 
-
 void cer0_synthesizer_oscillator_signal_set(
   struct cer0_synthesizer* synthesizer,
   unsigned int index_oscillator,
@@ -102,7 +101,6 @@ void cer0_synthesizer_oscillator_signal_set(
     signal
   );
 }
-
 
 void cer0_synthesizer_sample_rate_set(
   struct cer0_synthesizer* synthesizer,

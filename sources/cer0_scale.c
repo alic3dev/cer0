@@ -155,7 +155,7 @@ const unsigned char cer0_scale_notes_melodic_minor_ascending[cer0_scale_length_m
 };
 
 const unsigned char cer0_scale_notes_melodic_minor_descending[cer0_scale_length_melodic_minor_descending] = {
-  12, 10, 8, 7, 5, 3, 2  
+  12, 10, 8, 7, 5, 3, 2
 };
 
 const unsigned char cer0_scale_notes_minor_pentatonic[cer0_scale_length_minor_pentatonic] = {

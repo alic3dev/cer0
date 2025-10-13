@@ -35,7 +35,6 @@ void cer0_synthesizer_oscillator_frequency_set(
   float
 );
 
-
 void cer0_synthesizer_signal_set(
   struct cer0_synthesizer*,
   enum cer0_signal
