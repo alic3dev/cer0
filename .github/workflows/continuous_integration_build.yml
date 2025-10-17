@@ -8,6 +8,8 @@ jobs:
   continuous_integration_build:
     runs-on: macos-latest
     steps:
+      - name: git_initialization
+        run: git config --global init.defaultBranch core
       - name: checkout_cer0
         uses: actions/checkout@v4
         with:
@@ -17,9 +19,17 @@ jobs:
         with:
           path: clic3
           repository: alic3dev/clic3
-      - name: continuous_integration_build_make_clic3
-        run: cd clic3 && make library/clic3.o
-      - name: continuous_integration_build_make_cer0
-        run: cd cer0 && make cer0
-      - name: continuous_integration_build_make_cer0_tools
+      - name: make:
+        run: cd clic3 && make clic3_dylib
+      - name: make:cer0_objects
+        run: cd cer0 && make cer0_objects
+      - name: make:cer0_dylib
+        run: cd cer0 && make cer0_dylib
+      - name: make:cer0_dynamic
+        run: cd cer0 && make cer0_dynamic
+      - name: make:cer0_object
+        run: cd cer0 && make cer0_object
+      - name: make:cer0_static
+        run: cd cer0 && make cer0_static
+      - name: make:cer0_tools
         run: cd cer0 && make tools
