@@ -19,8 +19,10 @@ jobs:
         with:
           path: clic3
           repository: alic3dev/clic3
-      - name: make:clic3
+      - name: make:clic3_dylib
         run: cd clic3 && make clic3_dylib
+      - name: make:clic3_dynamic
+        run: cd clic3 && make clic3_dynamic
       - name: make:cer0_objects
         run: cd cer0 && make cer0_objects
       - name: make:cer0_dylib
