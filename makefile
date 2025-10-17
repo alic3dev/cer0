@@ -1,22 +1,68 @@
 name=cer0
 
-directory_clice=../clic3
-directory_clice_include=${directory_clice}/include
-directory_clice_library=${directory_clice}/library
+version_major=0
+version_minor=0
+version_patch=0
+version_major_minor=${version_major}.${version_minor}
+version=${version_major}.${version_minor}.${version_patch}
+
+version_target_clic3=0
+
+directory_objects_base=objects
+directory_library_base=library
+directory_library=${directory_library_base}
+directory_library_debug=${directory_library}_debug
+
+directory_objects=${directory_objects_base}/release
+
+directory_clic3=../clic3
+directory_clic3_library=${directory_clic3}/library
+directory_clic3_include=${directory_clic3}/include
+
+file_library_clic3_dylib=${directory_clic3_library}/clic3.${version_target_clic3}.dylib
+file_library_clic3_dynamic=${directory_clic3_library}/clic3.${version_target_clic3}.so
+
+ifeq (${debug}, 1)
+	name:=${name}_debug
+	directory_objects=${directory_objects_base}/debug
+	directory_library:=${directory_library_debug}
+	directory_clic3_library=${directory_clic3}/library_debug
+	file_library_clic3_dylib=${directory_clic3_library}/clic3_debug.${version_target_clic3}.dylib
+	file_library_clic3_dynamic=${directory_clic3_library}/clic3_debug.${version_target_clic3}.so
+endif
+
 directory_include=include
-directory_library=library
-directory_objects=objects
 directory_sources=sources
 directory_tools=tools
 
-file_library=${directory_library}/${name}.o
-file_library_clice=${directory_clice_library}/clic3.o
+file_library_object=${directory_library}/${name}.o
+
+name_library_dylib_major=${name}.${version_major}.dylib
+file_library_dylib=${directory_library}/${name}.dylib
+file_library_dylib_major=${directory_library}/${name_library_dylib_major}
+
+name_library_dynamic_major=${name}.${version_major}.so
+file_library_dynamic=${directory_library}/${name}.so
+file_library_dynamic_major=${directory_library}/${name_library_dynamic_major}
+
+file_library_static=${directory_library}/${name}.a
 
 files_sources=${wildcard ${directory_sources}/*.c}
 files_objects=${patsubst ${directory_sources}/%.c,${directory_objects}/%.o,${files_sources}}
 
+frameworks=-framework CoreAudio
+
 cc=clang
-c_flags=-O3 -I${directory_include} -I${directory_clice_include}
+c_flags=-I${directory_include} -I${directory_clic3_include}
+
+ifeq (${debug}, 1)
+	c_flags:=${c_flags} -O0 -g -v -da -Q
+else
+	c_flags:=${c_flags} -O3
+endif
+
+ar=ar
+ar_flags=cqS
 
 ld=ld
 ld_flags=
@@ -28,33 +74,65 @@ ${name}: ${file_library}
 
 all: ${name} tools
 
-tools: ${file_library} .force
+tools: ${file_library} .always
 	cd ${directory_tools} && make all
 
-${file_library}: ${files_objects} ${directory_library}
-	${ld} ${ld_flags} -r ${files_objects} -o ${file_library}
-	${strip} ${strip_flags} ${file_library}
+${name}: ${file_library_dylib} ${file_library_dynamic} ${file_library_object} ${file_library_static}
 
-${directory_objects}/%.o: ${directory_sources}/%.c ${directory_objects}
-	${cc} ${c_flags} -c $< -o $@
+${name}_objects: ${files_objects}
 
-${directory_library}:
+${name}_dylib: ${file_library_dylib}
+${name}_dynamic: ${file_library_dynamic}
+${name}_object: ${file_library_object}
+${name}_static: ${file_library_static}
+
+${file_library_dylib}: ${files_objects}
 	mkdir -p ${directory_library}
+	${cc} -dynamiclib -install_name ${name_library_dylib_major} -current_version ${version} -compatibility_version ${version_major_minor} ${frameworks} ${file_library_clic3_dylib} ${files_objects} -o ${file_library_dylib_major}
+ifneq (${debug}, 1)
+	${strip} ${strip_flags} ${file_library_dylib_major}
+endif
+	-rm ${file_library_dylib}
+	ln -s ${name_library_dylib_major} ${file_library_dylib}
 
-${directory_objects}:
+${file_library_dynamic}: ${files_objects}
+	mkdir -p ${directory_library}
+	${cc} -shared -install_name ${name_library_dynamic_major} -current_version ${version} -compatibility_version ${version_major_minor} ${frameworks} ${file_library_clic3_dynamic} ${files_objects} -o ${file_library_dynamic_major}
+ifneq (${debug}, 1)
+	${strip} ${strip_flags} ${file_library_dynamic_major}
+endif
+	-rm ${file_library_dynamic}
+	ln -s ${name_library_dynamic_major} ${file_library_dynamic}
+
+${file_library_object}: ${files_objects}
+	mkdir -p ${directory_library}
+	${ld} ${ld_flags} -r ${files_objects} -o ${file_library_object}
+ifneq (${debug}, 1)
+	${strip} ${strip_flags} ${file_library_object}
+endif
+
+${file_library_static}: ${files_objects}
+	mkdir -p ${directory_library}
+	${ar} ${ar_flags} ${file_library_static} ${files_objects}
+
+${directory_objects}/%.o: ${directory_sources}/%.c
 	mkdir -p ${directory_objects}
+	${cc} ${c_flags} -c $< -o $@
 
 clean_all: clean clean_tools
 
-clean: clean_library clean_objects
+clean: clean_library clean_library_debug clean_objects
 
 clean_library:
-	-rm -r ${directory_library} 2> /dev/null
+	-rm -r ${directory_library_base} 2> /dev/null
+
+clean_library_debug:
+	-rm -r ${directory_library_debug} 2> /dev/null
 
 clean_objects:
-	-rm -r ${directory_objects} 2> /dev/null
+	-rm -r ${directory_objects_base} 2> /dev/null
 
 clean_tools:
 	cd ${directory_tools} && make clean_all
 
-.force:
+.always:
