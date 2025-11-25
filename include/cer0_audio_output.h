@@ -1,6 +1,8 @@
 #ifndef __cer0_audio_output
 #define __cer0_audio_output
 
+#if target_os != 1
+
 #include <CoreAudio/CoreAudio.h>
 
 #define cer0_audio_output_channel_left = 0;
@@ -35,4 +37,5 @@ unsigned char cer0_audio_output_destroy(
   struct cer0_audio_output*
 );
 
+#endif
 #endif

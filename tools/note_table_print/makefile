@@ -7,16 +7,16 @@ directory_objects=${directory_objects_base}/release
 
 directory_cer0=../..
 directory_cer0_include=${directory_cer0}/include
-directory_cer0_library=${directory_cer0}/library
+directory_cer0_library=${directory_cer0}/library/macos/release
 
 directory_clic3=../../../clic3
 directory_clic3_include=${directory_clic3}/include
-directory_clic3_library=${directory_clic3}/library
+directory_clic3_library=${directory_clic3}/library/macos/release
 
 version_target_cer0=0
 version_target_clic3=0
 
-file_output_debug=${directory_output}/${name}_debug
+file_output_debug:=${directory_output}/${name}_debug
 file_output_release=${directory_output}/${name}
 file_output=${file_output_release}
 

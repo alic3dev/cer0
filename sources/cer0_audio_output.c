@@ -1,5 +1,6 @@
 #include <cer0_audio_output.h>
 
+#if target_os != 1
 #include <cer0_parameters.h>
 
 #include <CoreAudio/CoreAudio.h>
@@ -159,3 +160,5 @@ unsigned char cer0_audio_output_destroy(
 
   return result;
 }
+
+#endif
