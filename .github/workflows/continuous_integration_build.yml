@@ -3,7 +3,10 @@ on:
   push:
     branches: ["core"]
   pull_request:
-    branches: ["core"]
+    branches: ["*"]
+env:
+  target_device_version_ios: 18.5
+  target_device_version_macos: 15.5
 jobs:
   continuous_integration_build:
     runs-on: macos-latest
@@ -20,18 +23,32 @@ jobs:
           path: clic3
           repository: alic3dev/clic3
       - name: make:clic3_dylib
-        run: cd clic3 && make clic3_dylib
+        run: cd clic3 && make clic3_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make:clic3_dynamic
-        run: cd clic3 && make clic3_dynamic
+        run: cd clic3 && make clic3_dynamic target_device_version=${{ env.target_device_version_macos }}
       - name: make:cer0_objects
-        run: cd cer0 && make cer0_objects
+        run: cd cer0 && make cer0_objects target_device_version=${{ env.target_device_version_macos }}
       - name: make:cer0_dylib
-        run: cd cer0 && make cer0_dylib
+        run: cd cer0 && make cer0_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make:cer0_dynamic
-        run: cd cer0 && make cer0_dynamic
+        run: cd cer0 && make cer0_dynamic target_device_version=${{ env.target_device_version_macos }}
       - name: make:cer0_object
-        run: cd cer0 && make cer0_object
+        run: cd cer0 && make cer0_object target_device_version=${{ env.target_device_version_macos }}
       - name: make:cer0_static
-        run: cd cer0 && make cer0_static
+        run: cd cer0 && make cer0_static target_device_version=${{ env.target_device_version_macos }}
+      - name: make:clic3_ios_dylib
+        run: cd clic3 && make clic3_ios_dylib target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+      - name: make:clic3_ios_dynamic
+        run: cd clic3 && make clic3_ios_dynamic target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+      - name: make:cer0_ios_objects
+        run: cd cer0 && make cer0_ios_objects target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+      - name: make:cer0_ios_dylib
+        run: cd cer0 && make cer0_ios_dylib target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+      - name: make:cer0_ios_dynamic
+        run: cd cer0 && make cer0_ios_dynamic target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+      - name: make:cer0_ios_object
+        run: cd cer0 && make cer0_ios_object target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+      - name: make:cer0_ios_static
+        run: cd cer0 && make cer0_ios_static target_device_version=${{ env.target_device_version_ios }} target_device=iphone
       - name: make:cer0_tools
-        run: cd cer0 && make tools
+        run: cd cer0 && make tools target_device_version=${{ env.target_device_version_macos }}

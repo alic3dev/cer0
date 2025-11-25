@@ -1,5 +1,21 @@
 name=cer0
 
+ifndef target_device
+target_device=mac
+endif
+
+ifeq (${target_device},mac)
+target_os=macos
+endif
+
+ifeq (${target_device},iphone)
+target_os=ios
+endif
+
+ifneq (${target_os},macos)
+name:=${name}_${target_os}
+endif
+
 version_major=0
 version_minor=0
 version_patch=0
@@ -10,25 +26,39 @@ version_target_clic3=0
 
 directory_objects_base=objects
 directory_library_base=library
-directory_library=${directory_library_base}
-directory_library_debug=${directory_library}_debug
 
-directory_objects=${directory_objects_base}/release
+directory_library=${directory_library_base}/${target_os}/release
+directory_library_debug=${directory_library_base}/${target_os}/debug
+
+directory_objects=${directory_objects_base}/${target_os}/release
 
 directory_clic3=../clic3
-directory_clic3_library=${directory_clic3}/library
+directory_clic3_library=${directory_clic3}/library/${target_os}/release
 directory_clic3_include=${directory_clic3}/include
 
+directory_install=/System/Volumes/Preboot/Cryptexes
+
+ifeq (${target_os},macos)
 file_library_clic3_dylib=${directory_clic3_library}/clic3.${version_target_clic3}.dylib
 file_library_clic3_dynamic=${directory_clic3_library}/clic3.${version_target_clic3}.so
+else
+file_library_clic3_dylib=${directory_clic3_library}/clic3_${target_os}.${version_target_clic3}.dylib
+file_library_clic3_dynamic=${directory_clic3_library}/clic3_${target_os}.${version_target_clic3}.so
+endif
 
 ifeq (${debug}, 1)
 	name:=${name}_debug
-	directory_objects=${directory_objects_base}/debug
+	directory_objects=${directory_objects_base}/${target_os}/debug
 	directory_library:=${directory_library_debug}
-	directory_clic3_library=${directory_clic3}/library_debug
+	directory_clic3_library=${directory_clic3}/library/${target_os}/debug
+
+ifeq (${target_os},macos)
 	file_library_clic3_dylib=${directory_clic3_library}/clic3_debug.${version_target_clic3}.dylib
 	file_library_clic3_dynamic=${directory_clic3_library}/clic3_debug.${version_target_clic3}.so
+else
+	file_library_clic3_dylib=${directory_clic3_library}/clic3_${target_os}_debug.${version_target_clic3}.dylib
+	file_library_clic3_dynamic=${directory_clic3_library}/clic3_${target_os}_debug.${version_target_clic3}.so
+endif
 endif
 
 directory_include=include
@@ -41,6 +71,9 @@ name_library_dylib_major=${name}.${version_major}.dylib
 file_library_dylib=${directory_library}/${name}.dylib
 file_library_dylib_major=${directory_library}/${name_library_dylib_major}
 
+file_install=${directory_install}/OS${name}.dylib
+file_install_major=${directory_install}/OS${name_library_dylib_major}
+
 name_library_dynamic_major=${name}.${version_major}.so
 file_library_dynamic=${directory_library}/${name}.so
 file_library_dynamic_major=${directory_library}/${name_library_dynamic_major}
@@ -52,8 +85,31 @@ files_objects=${patsubst ${directory_sources}/%.c,${directory_objects}/%.o,${fil
 
 frameworks=-framework CoreAudio
 
+ifndef target_device_version
+	target_device_version=26.1
+endif
+
+ifeq (${target_os},macos)
+target_platform=arm64-apple-macos${target_device_version}
+
+directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
+endif
+
+ifneq (${target_os},macos)
+files_objects:=${patsubst ${directory_objects}/%.o,${directory_objects}/%_${target_os}.o,${files_objects}}
+
+target_platform=arm64-apple-ios${target_iphoneos_version}
+
+directory_sdk=${shell xcrun --sdk iphoneos${target_device_version} --show-sdk-path}
+endif
+
 cc=clang
-c_flags=-I${directory_include} -I${directory_clic3_include}
+c_flags_platform=-target ${target_platform} -isysroot ${directory_sdk}
+c_flags=-I${directory_include} -I${directory_clic3_include} ${c_flags_platform}
+
+ifeq (${target_os},ios)
+c_flags:=${c_flags} -Dtarget_os=1
+endif
 
 ifeq (${debug}, 1)
 	c_flags:=${c_flags} -O0 -g -v -da -Q
@@ -86,9 +142,13 @@ ${name}_dynamic: ${file_library_dynamic}
 ${name}_object: ${file_library_object}
 ${name}_static: ${file_library_static}
 
+install: ${file_library_dylib}
+	dd if="${file_library_dylib_major}" of="${file_install_major}"
+	ln -s "${file_install_major}" "${file_install}"
+
 ${file_library_dylib}: ${files_objects}
 	mkdir -p ${directory_library}
-	${cc} -dynamiclib -install_name ${name_library_dylib_major} -current_version ${version} -compatibility_version ${version_major_minor} ${frameworks} ${file_library_clic3_dylib} ${files_objects} -o ${file_library_dylib_major}
+	${cc} -dynamiclib ${c_flags_platform} -install_name ${name_library_dylib_major} -current_version ${version} -compatibility_version ${version_major_minor} ${frameworks} ${file_library_clic3_dylib} ${files_objects} -o ${file_library_dylib_major}
 ifneq (${debug}, 1)
 	${strip} ${strip_flags} ${file_library_dylib_major}
 endif
@@ -97,7 +157,7 @@ endif
 
 ${file_library_dynamic}: ${files_objects}
 	mkdir -p ${directory_library}
-	${cc} -shared -install_name ${name_library_dynamic_major} -current_version ${version} -compatibility_version ${version_major_minor} ${frameworks} ${file_library_clic3_dynamic} ${files_objects} -o ${file_library_dynamic_major}
+	${cc} -shared ${c_flags_platform} -install_name ${name_library_dynamic_major} -current_version ${version} -compatibility_version ${version_major_minor} ${frameworks} ${file_library_clic3_dynamic} ${files_objects} -o ${file_library_dynamic_major}
 ifneq (${debug}, 1)
 	${strip} ${strip_flags} ${file_library_dynamic_major}
 endif
@@ -116,6 +176,10 @@ ${file_library_static}: ${files_objects}
 	${ar} ${ar_flags} ${file_library_static} ${files_objects}
 
 ${directory_objects}/%.o: ${directory_sources}/%.c
+	mkdir -p ${directory_objects}
+	${cc} ${c_flags} -c $< -o $@
+
+${directory_objects}/%_${target_os}.o: ${directory_sources}/%.c
 	mkdir -p ${directory_objects}
 	${cc} ${c_flags} -c $< -o $@
 
