@@ -1,7 +1,7 @@
 #ifndef __cer0_audio_output
 #define __cer0_audio_output
 
-#if target_os != 1
+#if !cer0_audio_disabled
 
 #include <CoreAudio/CoreAudio.h>
 
