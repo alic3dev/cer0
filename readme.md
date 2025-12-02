@@ -10,6 +10,10 @@ c:implementation.of->{[`zer0`](https://github.com/alic3dev/zer0)};
 
 ### include
 
+#### preprocessor_macros
+
+- `cer0_audio_disabled` can be used to disable audio_output (useful for platforms without `CoreAudio` support) 
+
 #### c: [`%.c`|`%.h`]
 
 ```c

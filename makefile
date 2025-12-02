@@ -107,8 +107,10 @@ cc=clang
 c_flags_platform=-target ${target_platform} -isysroot ${directory_sdk}
 c_flags=-I${directory_include} -I${directory_clic3_include} ${c_flags_platform}
 
-ifeq (${target_os},ios)
-c_flags:=${c_flags} -Dtarget_os=1
+ifneq (${target_os},ios)
+c_flags:=${c_flags}
+else
+c_flags:=${c_flags} -Dcer0_audio_disabled
 endif
 
 ifeq (${debug}, 1)

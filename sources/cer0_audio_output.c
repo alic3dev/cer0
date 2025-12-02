@@ -1,6 +1,6 @@
 #include <cer0_audio_output.h>
 
-#if target_os != 1
+#if !cer0_audio_disabled
 #include <cer0_parameters.h>
 
 #include <CoreAudio/CoreAudio.h>
