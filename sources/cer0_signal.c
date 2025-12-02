@@ -54,7 +54,7 @@ float cer0_signal_triangle(
   return 2.0f * (value - 0.5f);
 }
 
-char *cer0_signal_name_lookup[cer0_length_signals] = {
+char* cer0_signal_name_lookup[cer0_length_signals] = {
   cer0_name_signal_sawtooth_down,
   cer0_name_signal_sawtooth_up,
   cer0_name_signal_sine,
