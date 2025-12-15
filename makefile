@@ -92,20 +92,18 @@ files_objects_obj_c=${patsubst ${directory_sources}/%.m,${directory_objects_obj_
 frameworks=-framework CoreAudio
 
 ifndef target_device_version
-	target_device_version=26.1
+target_device_version=26.1
 endif
 
 ifeq (${target_os},macos)
 target_platform=arm64-apple-macos${target_device_version}
 
 directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
-endif
-
-ifneq (${target_os},macos)
+else
 files_objects_c:=${patsubst ${directory_objects_c}/%.o,${directory_objects_c}/%_${target_os}.o,${files_objects_c}}
 files_objects_obj_c:=${patsubst ${directory_objects_obj_c}/%.o,${directory_objects_obj_c}/%_${target_os}.o,${files_objects_obj_c}}
 
-target_platform=arm64-apple-ios${target_iphoneos_version}
+target_platform=arm64-apple-ios${target_device_version}
 
 directory_sdk=${shell xcrun --sdk iphoneos${target_device_version} --show-sdk-path}
 endif
@@ -128,7 +126,7 @@ else
 	c_flags:=${c_flags} -O3
 endif
 
-c_flags_obj_c=${c_flags} -x objective-c -fmodules -fconstant-cfstrings -Wno-unguarded-availability-new -Wno-nullability-completeness
+c_flags_obj_c=${c_flags} -x objective-c -fmodules -fconstant-cfstrings
 
 ar=ar
 ar_flags=cqS
