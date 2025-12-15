@@ -1,6 +1,7 @@
+#if !target_ios
+
 #include <cer0_audio_output.h>
 
-#if !cer0_audio_disabled
 #include <cer0_parameters.h>
 
 #include <CoreAudio/CoreAudio.h>
@@ -21,7 +22,11 @@ unsigned char cer0_audio_output_initialize(
   audio_output->audio_object_property_address = &audio_object_property_address;
 
   audio_output->device = kAudioDeviceUnknown;
-  audio_output->device_size = sizeof(audio_output->device);
+  audio_output->device_size = (
+    sizeof(
+      audio_output->device
+    )
+  );
 
   audio_output->io_proc = io_proc;
 
@@ -29,7 +34,7 @@ unsigned char cer0_audio_output_initialize(
     kAudioObjectSystemObject,
     audio_output->audio_object_property_address,
     0,
-    (void*)0,
+    (void*) 0,
     &audio_output->device_size,
     &audio_output->device
   );
@@ -38,7 +43,7 @@ unsigned char cer0_audio_output_initialize(
 
   OSStatus status_device_start = AudioDeviceStart(
     audio_output->device,
-    (void*)0
+    (void*) 0
   );
 
   if (status_device_start != 0) {
@@ -61,8 +66,12 @@ unsigned char cer0_audio_output_initialize(
     &audio_output->io_proc_id
   );
 
-  if (status_create_io_proc_id != 0) {
-    if (cer0_parameter_log_level != cer0_parameter_log_level_none) {
+  if (
+    status_create_io_proc_id != 0
+  ) {
+    if (
+      cer0_parameter_log_level != cer0_parameter_log_level_none
+    ) {
       fprintf(
         stderr,
         "failed_to_create:io_proc_id:%i\n",
@@ -78,8 +87,12 @@ unsigned char cer0_audio_output_initialize(
     audio_output->io_proc_id
   );
 
-  if (status_audio_device_start != 0) {
-    if (cer0_parameter_log_level != cer0_parameter_log_level_none) {
+  if (
+    status_audio_device_start != 0
+  ) {
+    if (
+      cer0_parameter_log_level != cer0_parameter_log_level_none
+    ) {
       fprintf(
         stderr,
         "failed_to_start:[device|io_proc_id]->{[%i|%i]}\n",
@@ -91,7 +104,11 @@ unsigned char cer0_audio_output_initialize(
     return 1;
   }
 
-  return audio_output->io_proc_id == (void*)0 ? 1 : 0;
+  return (
+    audio_output->io_proc_id == (void*) 0
+    ? 1
+    : 0
+  );
 }
 
 unsigned char cer0_audio_output_destroy(
@@ -104,8 +121,12 @@ unsigned char cer0_audio_output_destroy(
     audio_output->io_proc_id
   );
 
-  if (status_audio_device_destroy_io_proc_id != 0) {
-    if (cer0_parameter_log_level != cer0_parameter_log_level_none) {
+  if (
+    status_audio_device_destroy_io_proc_id != 0
+  ) {
+    if (
+      cer0_parameter_log_level != cer0_parameter_log_level_none
+    ) {
       fprintf(
         stderr,
         "failed_to_destroy:io_proc_id->{%i}\n",
@@ -123,8 +144,12 @@ unsigned char cer0_audio_output_destroy(
     audio_output->io_proc_id
   );
 
-  if (status_audio_device_stop != 0) {
-    if (cer0_parameter_log_level != cer0_parameter_log_level_none) {
+  if (
+    status_audio_device_stop != 0
+  ) {
+    if (
+      cer0_parameter_log_level != cer0_parameter_log_level_none
+    ) {
       fprintf(
         stderr,
         "failed_to_stop_:[device|io_proc_id]->{[%i|%i]}\n",
@@ -140,11 +165,15 @@ unsigned char cer0_audio_output_destroy(
 
   status_audio_device_stop = AudioDeviceStop(
     audio_output->device,
-    (void*)0
+    (void*) 0
   );
 
-  if (status_audio_device_stop != 0) {
-    if (cer0_parameter_log_level != cer0_parameter_log_level_none) {
+  if (
+    status_audio_device_stop != 0
+  ) {
+    if (
+      cer0_parameter_log_level != cer0_parameter_log_level_none
+    ) {
       fprintf(
         stderr,
         "Failed to stop device [%i]: %i\n",
