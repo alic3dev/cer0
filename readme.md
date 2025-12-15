@@ -11,7 +11,7 @@ c:implementation.of->{[`zer0`](https://github.com/alic3dev/zer0)};
 
 ### preprocessor_macros
 
-- `target_ios`:switches_audio_output_from_core_audio_to_avf_audio
+- `target_os_ios`:switches_audio_output_from_core_audio_to_avf_audio
 
 ### framework
 

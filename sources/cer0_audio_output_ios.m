@@ -1,4 +1,4 @@
-#if target_ios
+#if target_os_ios
 
 #include <cer0_audio_output.h>
 
