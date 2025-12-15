@@ -1,4 +1,4 @@
-name: continuous_integration_build
+name: continuous_integration_build_ios
 on:
   push:
     branches: ["core"]
@@ -10,7 +10,7 @@ env:
   key_cache_clic3: cache_clic3_ios_0_0_0
   target_device_version: 18.5
 jobs:
-  continuous_integration_build:
+  continuous_integration_build_ios:
     runs-on: macos-latest
     steps:
       - name: git_initialization
