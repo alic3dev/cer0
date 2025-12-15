@@ -47,19 +47,22 @@ file_library_clic3_dynamic=${directory_clic3_library}/clic3_${target_os}.${versi
 endif
 
 ifeq (${debug}, 1)
-	name:=${name}_debug
-	directory_objects=${directory_objects_base}/${target_os}/debug
-	directory_library:=${directory_library_debug}
-	directory_clic3_library=${directory_clic3}/library/${target_os}/debug
+name:=${name}_debug
+directory_objects=${directory_objects_base}/${target_os}/debug
+directory_library:=${directory_library_debug}
+directory_clic3_library=${directory_clic3}/library/${target_os}/debug
 
 ifeq (${target_os},macos)
-	file_library_clic3_dylib=${directory_clic3_library}/clic3_debug.${version_target_clic3}.dylib
-	file_library_clic3_dynamic=${directory_clic3_library}/clic3_debug.${version_target_clic3}.so
+file_library_clic3_dylib=${directory_clic3_library}/clic3_debug.${version_target_clic3}.dylib
+file_library_clic3_dynamic=${directory_clic3_library}/clic3_debug.${version_target_clic3}.so
 else
-	file_library_clic3_dylib=${directory_clic3_library}/clic3_${target_os}_debug.${version_target_clic3}.dylib
-	file_library_clic3_dynamic=${directory_clic3_library}/clic3_${target_os}_debug.${version_target_clic3}.so
+file_library_clic3_dylib=${directory_clic3_library}/clic3_${target_os}_debug.${version_target_clic3}.dylib
+file_library_clic3_dynamic=${directory_clic3_library}/clic3_${target_os}_debug.${version_target_clic3}.so
 endif
 endif
+
+directory_objects_c=${directory_objects}/c
+directory_objects_obj_c=${directory_objects}/obj_c
 
 directory_include=include
 directory_sources=sources
@@ -80,8 +83,11 @@ file_library_dynamic_major=${directory_library}/${name_library_dynamic_major}
 
 file_library_static=${directory_library}/${name}.a
 
-files_sources=${wildcard ${directory_sources}/*.c}
-files_objects=${patsubst ${directory_sources}/%.c,${directory_objects}/%.o,${files_sources}}
+files_sources_c=${wildcard ${directory_sources}/*.c}
+files_sources_obj_c=${wildcard ${directory_sources}/*.m}
+
+files_objects_c=${patsubst ${directory_sources}/%.c,${directory_objects_c}/%.o,${files_sources_c}}
+files_objects_obj_c=${patsubst ${directory_sources}/%.m,${directory_objects_obj_c}/%.o,${files_sources_obj_c}}
 
 frameworks=-framework CoreAudio
 
@@ -96,12 +102,15 @@ directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path
 endif
 
 ifneq (${target_os},macos)
-files_objects:=${patsubst ${directory_objects}/%.o,${directory_objects}/%_${target_os}.o,${files_objects}}
+files_objects_c:=${patsubst ${directory_objects_c}/%.o,${directory_objects_c}/%_${target_os}.o,${files_objects_c}}
+files_objects_obj_c:=${patsubst ${directory_objects_obj_c}/%.o,${directory_objects_obj_c}/%_${target_os}.o,${files_objects_obj_c}}
 
 target_platform=arm64-apple-ios${target_iphoneos_version}
 
 directory_sdk=${shell xcrun --sdk iphoneos${target_device_version} --show-sdk-path}
 endif
+
+files_objects=${files_objects_c} ${files_objects_obj_c}
 
 cc=clang
 c_flags_platform=-target ${target_platform} -isysroot ${directory_sdk}
@@ -110,7 +119,7 @@ c_flags=-I${directory_include} -I${directory_clic3_include} ${c_flags_platform}
 ifneq (${target_os},ios)
 c_flags:=${c_flags}
 else
-c_flags:=${c_flags} -Dcer0_audio_disabled
+c_flags:=${c_flags} -Dtarget_ios
 endif
 
 ifeq (${debug}, 1)
@@ -118,6 +127,8 @@ ifeq (${debug}, 1)
 else
 	c_flags:=${c_flags} -O3
 endif
+
+c_flags_obj_c=${c_flags} -x objective-c -fmodules -fconstant-cfstrings -Wno-unguarded-availability-new -Wno-nullability-completeness
 
 ar=ar
 ar_flags=cqS
@@ -177,13 +188,21 @@ ${file_library_static}: ${files_objects}
 	mkdir -p ${directory_library}
 	${ar} ${ar_flags} ${file_library_static} ${files_objects}
 
-${directory_objects}/%.o: ${directory_sources}/%.c
-	mkdir -p ${directory_objects}
+${directory_objects_c}/%.o: ${directory_sources}/%.c
+	mkdir -p ${dir $@}
 	${cc} ${c_flags} -c $< -o $@
 
-${directory_objects}/%_${target_os}.o: ${directory_sources}/%.c
-	mkdir -p ${directory_objects}
+${directory_objects_obj_c}/%.o: ${directory_sources}/%.m
+	mkdir -p ${dir $@}
+	${cc} ${c_flags_obj_c} -c $< -o $@
+
+${directory_objects_c}/%_${target_os}.o: ${directory_sources}/%.c
+	mkdir -p ${dir $@}
 	${cc} ${c_flags} -c $< -o $@
+
+${directory_objects_obj_c}/%_${target_os}.o: ${directory_sources}/%.m
+	mkdir -p ${dir $@}
+	${cc} ${c_flags_obj_c} -c $< -o $@
 
 clean_all: clean clean_tools
 
