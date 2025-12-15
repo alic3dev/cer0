@@ -93,8 +93,8 @@ unsigned char cer0_audio_output_initialize(
       alloc
     ]
     initWithFormat: format_output
-    renderBlock: ^OSStatus(
-      BOOL* _Nonnull silence,
+    renderBlock: ^int(
+      bool* _Nonnull silence,
       const AudioTimeStamp* _Nonnull timestamp,
       AVAudioFrameCount frame_count,
       AudioBufferList* _Nonnull output_data

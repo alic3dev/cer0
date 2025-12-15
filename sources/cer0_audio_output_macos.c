@@ -41,7 +41,7 @@ unsigned char cer0_audio_output_initialize(
 
   audio_output->sample_rate = 44100.0f;
 
-  OSStatus status_device_start = AudioDeviceStart(
+  int status_device_start = AudioDeviceStart(
     audio_output->device,
     (void*) 0
   );
@@ -59,7 +59,7 @@ unsigned char cer0_audio_output_initialize(
     return 1;
   }
 
-  OSStatus status_create_io_proc_id = AudioDeviceCreateIOProcID(
+  int status_create_io_proc_id = AudioDeviceCreateIOProcID(
     audio_output->device,
     audio_output->io_proc,
     data_io_proc,
@@ -82,7 +82,7 @@ unsigned char cer0_audio_output_initialize(
     return 1;
   }
 
-  OSStatus status_audio_device_start = AudioDeviceStart(
+  int status_audio_device_start = AudioDeviceStart(
     audio_output->device,
     audio_output->io_proc_id
   );
@@ -116,7 +116,7 @@ unsigned char cer0_audio_output_destroy(
 ) {
   unsigned char result = 0;
 
-  OSStatus status_audio_device_destroy_io_proc_id = AudioDeviceDestroyIOProcID(
+  int status_audio_device_destroy_io_proc_id = AudioDeviceDestroyIOProcID(
     audio_output->device,
     audio_output->io_proc_id
   );
@@ -139,7 +139,7 @@ unsigned char cer0_audio_output_destroy(
     );
   }
 
-  OSStatus status_audio_device_stop = AudioDeviceStop(
+  int status_audio_device_stop = AudioDeviceStop(
     audio_output->device,
     audio_output->io_proc_id
   );
