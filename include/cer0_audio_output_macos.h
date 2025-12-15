@@ -1,7 +1,7 @@
 #ifndef __cer0_audio_output_macos_h
 #define __cer0_audio_output_macos_h
 
-#if !target_ios
+#if !target_os_ios
 
 #include <CoreAudio/CoreAudio.h>
 

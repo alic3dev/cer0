@@ -1,7 +1,7 @@
 #ifndef __cer0_audio_output
 #define __cer0_audio_output
 
-#if target_ios
+#if target_os_ios
 #include <AVFAudio/AVFAudio.h>
 
 typedef int (*cer0_audio_output_io_proc)(

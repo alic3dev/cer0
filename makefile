@@ -117,7 +117,7 @@ c_flags=-I${directory_include} -I${directory_clic3_include} ${c_flags_platform}
 ifneq (${target_os},ios)
 c_flags:=${c_flags}
 else
-c_flags:=${c_flags} -Dtarget_ios
+c_flags:=${c_flags} -Dtarget_os_ios
 endif
 
 ifeq (${debug}, 1)
