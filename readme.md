@@ -6,90 +6,61 @@ c:implementation.of->{[`zer0`](https://github.com/alic3dev/zer0)};
 
 ### dependencies
 
-- [clic3](https://github.com/alic3dev/clic3):library->{`clic3.o`}
+- [alic3dev](https://github.com/alic3dev)
+- - [clic3](https://github.com/alic3dev/clic3)
 
-### include
+### preprocessor_macros
 
-#### preprocessor_macros
-
-- `cer0_audio_disabled` can be used to disable audio_output (useful for platforms without `CoreAudio` support) 
-
-#### c: [`%.c`|`%.h`]
-
-```c
-#include <cer0.h>
-```
-
-#### gcc
-
-```zsh
-gcc -I${cer0_directory}include
-```
-
-### object
-
-```zsh
-gcc ${directory_cer0}/library/cer0.o ${directory_clic3}/library/clic3.o
-```
+- `target_ios`:switches_audio_output_from_core_audio_to_avf_audio
 
 ### framework
 
 required_for->{executable output}
 
 ```zsh
-gcc -framework CoreAudio
+clang -framework CoreAudio
 ```
 
-### compilation
+## tools
 
-#### executable
+### note_table_print
 
-```zsh
-gcc -framework CoreAudio -I${directory_cer0}/include ${directory_cer0}/library/cer0.o ${directory_clic3}/library/clic3.o source.c -o output
+prints frequencies for notes within a specified octave range and frequency
+
+#### usage
+
 ```
-
-#### object
-
-```zsh
-gcc -I${directory_cer0}/include -c source.c -o source.o
+usage: note_table_print #octave_starting #octave_ending #frequency #?steps_notes
 ```
 
 ## development
 
+### `make`:flags
+
+- `debug=1`:adds->{`debugging_symbols`}:disables->{`optimizations`};
+- `target_device`:sets_the_target_device_platform->{values::[`mac`|`iphone`]}
+- `target_device_version`:sets_the_target_device_version.for->{`macos`|`ios`};
+
 ### build
 
 ```zsh
+# library
 make
-```
-
-#### all
-
-```zsh
-make all
-```
-
-#### tools
-
-```zsh
+# tools
 make tools
+# all
+make all
 ```
 
 ### clean
 
 ```zsh
+# library|objects
 make clean
-```
-
-#### all
-
-```zsh
-make clean_all
-```
-
-#### tools
-
-```zsh
+# tools
 make clean_tools
+# all
+make clean all
 ```
 
 ## copyright|copyleft
