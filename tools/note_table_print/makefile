@@ -1,5 +1,13 @@
 name=note_table_print
 
+ifndef target_device_version
+target_device_version=26.1
+endif
+
+target_platform=arm64-apple-macos${target_device_version}
+
+directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
+
 directory_objects_base=objects
 directory_output=../output
 
@@ -39,7 +47,8 @@ files_sources=${wildcard ${directory_sources}/*.c}
 files_objects=${patsubst ${directory_sources}/%.c,${directory_objects}/%.o,${files_sources}}
 
 cc=clang
-c_flags=-I${directory_include} -I${directory_cer0_include}
+c_flags_platform=-target ${target_platform} -isysroot ${directory_sdk}
+c_flags=-I${directory_include} -I${directory_cer0_include} ${c_flags_platform}
 c_flags_output=-framework CoreAudio
 
 ifeq (${debug}, 1)
