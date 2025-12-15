@@ -44,7 +44,8 @@ void cer0_synthesizer_oscillator_add(
 
   cer0_oscillator_initialize(
     &synthesizer->oscillators[
-      synthesizer->length_oscillators - 1
+      synthesizer->length_oscillators -
+      1
     ],
     synthesizer->sample_rate,
     synthesizer->frequency,
@@ -73,7 +74,9 @@ void cer0_synthesizer_oscillator_frequency_set(
   float frequency
 ) {
   cer0_oscillator_frequency_set(
-    &synthesizer->oscillators[index_oscillator],
+    &synthesizer->oscillators[
+      index_oscillator
+    ],
     frequency
   );
 }
@@ -97,7 +100,9 @@ void cer0_synthesizer_oscillator_signal_set(
   enum cer0_signal signal
 ) {
   cer0_oscillator_signal_set(
-    &synthesizer->oscillators[index_oscillator],
+    &synthesizer->oscillators[
+      index_oscillator
+    ],
     signal
   );
 }
@@ -110,7 +115,9 @@ void cer0_synthesizer_sample_rate_set(
 
   for_oscillators {
     cer0_oscillator_sample_rate_set(
-      &synthesizer->oscillators[index_oscillator],
+      &synthesizer->oscillators[
+        index_oscillator
+      ],
       synthesizer->sample_rate
     );
   }
@@ -123,11 +130,13 @@ float cer0_synthesizer_poll(
 
   for_oscillators {
     value_output = (
-      value_output + (
-        cer0_oscillator_poll(
-          &synthesizer->oscillators[index_oscillator]
-        ) / (float) synthesizer->length_oscillators
-      )
+      value_output +
+      cer0_oscillator_poll(
+        &synthesizer->oscillators[
+          index_oscillator
+        ]
+      ) /
+      (float) synthesizer->length_oscillators
     );
   }
 
@@ -140,5 +149,7 @@ float cer0_synthesizer_poll(
 void cer0_synthesizer_destroy(
   struct cer0_synthesizer* synthesizer
 ) {
-  free(synthesizer->oscillators);
+  free(
+    synthesizer->oscillators
+  );
 }
