@@ -60,7 +60,10 @@ float cer0_oscillator_poll(
     &oscillator->phase
   );
 
-  return oscillator->signal_function(
-    oscillator->phase.value
+  return (
+    oscillator->signal_function(
+      oscillator->phase.value
+    ) *
+    oscillator->amplitude
   );
 }
