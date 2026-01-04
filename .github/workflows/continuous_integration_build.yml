@@ -7,7 +7,9 @@ on:
 env:
   enabled_caching: 1
   enabled_caching_clic3: 1
+  enabled_caching_math_c: 1
   key_cache_clic3: cache_clic3_0_0_0
+  key_cache_math_c: cache_math_c_0_0_0
   target_device_version: 15.5
 jobs:
   continuous_integration_build:
@@ -26,18 +28,37 @@ jobs:
         with:
           path: clic3
           key: ${{ env.key_cache_clic3 }}
+      - name: cache_restore_math_c
+        id: cache_restore_math_c
+        if: ${{ env.enabled_caching == '1' && env.enabled_caching_math_c == '1' }}
+        uses: actions/cache/restore@v4
+        with:
+          path: math_c
+          key: ${{ env.key_cache_math_c }}
       - name: checkout_clic3
         if: steps.cache_restore_clic3.outputs.cache-hit != 'true'
         uses: actions/checkout@v5
         with:
           repository: alic3dev/clic3
           path: clic3
+      - name: checkout_math_c
+        if: steps.cache_restore_math_c.outputs.cache-hit != 'true'
+        uses: actions/checkout@v5
+        with:
+          repository: alic3dev/math_c
+          path: math_c
       - name: make:clic3_dylib
         if: steps.cache_restore_clic3.outputs.cache-hit != 'true'
         run: cd clic3 && make clic3_dylib target_device_version=${{ env.target_device_version }}
       - name: make:clic3_dynamic
         if: steps.cache_restore_clic3.outputs.cache-hit != 'true'
         run: cd clic3 && make clic3_dynamic target_device_version=${{ env.target_device_version }}
+      - name: make:math_c_dylib
+        if: steps.cache_restore_math_c.outputs.cache-hit != 'true'
+        run: cd math_c && make math_c_dylib target_device_version=${{ env.target_device_version }}
+      - name: make:math_c_dynamic
+        if: steps.cache_restore_math_c.outputs.cache-hit != 'true'
+        run: cd math_c && make math_c_dynamic target_device_version=${{ env.target_device_version }}
       - name: make:cer0_objects
         run: cd cer0 && make cer0_objects target_device_version=${{ env.target_device_version }}
       - name: make:cer0_dylib
@@ -57,3 +78,11 @@ jobs:
         with:
           path: clic3
           key: ${{ env.key_cache_clic3 }}
+      - name: cache_save_math_c
+        id: cache_save_math_c
+        if: ${{ env.enabled_caching == '1' && env.enabled_caching_math_c == '1' && steps.cache_restore_math_c.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@v4
+        with:
+          path: math_c
+          key: ${{ env.key_cache_math_c }}
+
