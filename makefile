@@ -23,6 +23,7 @@ version_major_minor=${version_major}.${version_minor}
 version=${version_major}.${version_minor}.${version_patch}
 
 version_target_clic3=0
+version_target_math_c=0
 
 directory_objects_base=objects
 directory_library_base=library
@@ -36,14 +37,24 @@ directory_clic3=../clic3
 directory_clic3_library=${directory_clic3}/library/${target_os}/release
 directory_clic3_include=${directory_clic3}/include
 
+directory_math_c=../math_c
+directory_math_c_library=${directory_math_c}/library/${target_os}/release
+directory_math_c_include=${directory_math_c}/include
+
 directory_install=/System/Volumes/Preboot/Cryptexes
 
 ifeq (${target_os},macos)
 file_library_clic3_dylib=${directory_clic3_library}/clic3.${version_target_clic3}.dylib
 file_library_clic3_dynamic=${directory_clic3_library}/clic3.${version_target_clic3}.so
+
+file_library_math_c_dylib=${directory_math_c_library}/math_c.${version_target_math_c}.dylib
+file_library_math_c_dynamic=${directory_math_c_library}/math_c.${version_target_math_c}.so
 else
 file_library_clic3_dylib=${directory_clic3_library}/clic3_${target_os}.${version_target_clic3}.dylib
 file_library_clic3_dynamic=${directory_clic3_library}/clic3_${target_os}.${version_target_clic3}.so
+
+file_library_math_c_dylib=${directory_math_c_library}/math_c_${target_os}.${version_target_math_c}.dylib
+file_library_math_c_dynamic=${directory_math_c_library}/math_c_${target_os}.${version_target_math_c}.so
 endif
 
 ifeq (${debug}, 1)
@@ -55,9 +66,15 @@ directory_clic3_library=${directory_clic3}/library/${target_os}/debug
 ifeq (${target_os},macos)
 file_library_clic3_dylib=${directory_clic3_library}/clic3_debug.${version_target_clic3}.dylib
 file_library_clic3_dynamic=${directory_clic3_library}/clic3_debug.${version_target_clic3}.so
+
+file_library_math_c_dylib=${directory_math_c_library}/math_c_debug.${version_target_math_c}.dylib
+file_library_math_c_dynamic=${directory_math_c_library}/math_c_debug.${version_target_math_c}.so
 else
 file_library_clic3_dylib=${directory_clic3_library}/clic3_${target_os}_debug.${version_target_clic3}.dylib
 file_library_clic3_dynamic=${directory_clic3_library}/clic3_${target_os}_debug.${version_target_clic3}.so
+
+file_library_math_c_dylib=${directory_math_c_library}/math_c_${target_os}_debug.${version_target_math_c}.dylib
+file_library_math_c_dynamic=${directory_math_c_library}/math_c_${target_os}_debug.${version_target_math_c}.so
 endif
 endif
 
@@ -112,7 +129,7 @@ files_objects=${files_objects_c} ${files_objects_obj_c}
 
 cc=clang
 c_flags_platform=-target ${target_platform} -isysroot ${directory_sdk}
-c_flags=-I${directory_include} -I${directory_clic3_include} ${c_flags_platform}
+c_flags=-I${directory_include} -I${directory_clic3_include} -I${directory_math_c_include} ${c_flags_platform}
 
 ifneq (${target_os},ios)
 c_flags:=${c_flags}
@@ -159,7 +176,7 @@ install: ${file_library_dylib}
 
 ${file_library_dylib}: ${files_objects}
 	mkdir -p ${directory_library}
-	${cc} -dynamiclib ${c_flags_platform} -install_name ${name_library_dylib_major} -current_version ${version} -compatibility_version ${version_major_minor} ${frameworks} ${file_library_clic3_dylib} ${files_objects} -o ${file_library_dylib_major}
+	${cc} -dynamiclib ${c_flags_platform} -install_name ${name_library_dylib_major} -current_version ${version} -compatibility_version ${version_major_minor} ${frameworks} ${file_library_clic3_dylib} ${file_library_math_c_dylib} ${files_objects} -o ${file_library_dylib_major}
 ifneq (${debug}, 1)
 	${strip} ${strip_flags} ${file_library_dylib_major}
 endif
@@ -168,7 +185,7 @@ endif
 
 ${file_library_dynamic}: ${files_objects}
 	mkdir -p ${directory_library}
-	${cc} -shared ${c_flags_platform} -install_name ${name_library_dynamic_major} -current_version ${version} -compatibility_version ${version_major_minor} ${frameworks} ${file_library_clic3_dynamic} ${files_objects} -o ${file_library_dynamic_major}
+	${cc} -shared ${c_flags_platform} -install_name ${name_library_dynamic_major} -current_version ${version} -compatibility_version ${version_major_minor} ${frameworks} ${file_library_clic3_dynamic} ${file_library_math_c_dynamic} ${files_objects} -o ${file_library_dynamic_major}
 ifneq (${debug}, 1)
 	${strip} ${strip_flags} ${file_library_dynamic_major}
 endif
