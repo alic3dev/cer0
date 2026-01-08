@@ -62,6 +62,7 @@ name:=${name}_debug
 directory_objects=${directory_objects_base}/${target_os}/debug
 directory_library:=${directory_library_debug}
 directory_clic3_library=${directory_clic3}/library/${target_os}/debug
+directory_math_c_library=${directory_math_c}/library/${target_os}/debug
 
 ifeq (${target_os},macos)
 file_library_clic3_dylib=${directory_clic3_library}/clic3_debug.${version_target_clic3}.dylib
