@@ -48,9 +48,11 @@ void cer0_oscillator_signal_set(
   enum cer0_signal signal
 ) {
   oscillator->signal = signal;
-  oscillator->signal_function = cer0_signal_function_lookup[
-    oscillator->signal
-  ];
+  oscillator->signal_function = (
+    cer0_signal_function_lookup[
+      oscillator->signal
+    ]
+  );
 }
 
 float cer0_oscillator_poll(

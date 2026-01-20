@@ -4,13 +4,15 @@
 #include <cer0_constants.h>
 
 #define cer0_length_signals 6
+#define cer0_length_signals_extended 7
 
-#define cer0_name_signal_sawtooth_down "Sawtooth Down"
-#define cer0_name_signal_sawtooth_up "Sawtooth Up"
-#define cer0_name_signal_sine "Sine"
-#define cer0_name_signal_square "Square"
-#define cer0_name_signal_triangle "Triangle"
-#define cer0_name_signal_white_noise "White Noise"
+#define cer0_name_signal_sawtooth_down "sawtooth_down"
+#define cer0_name_signal_sawtooth_up "sawtooth_up"
+#define cer0_name_signal_sine "sine"
+#define cer0_name_signal_square "square"
+#define cer0_name_signal_triangle "triangle"
+#define cer0_name_signal_white_noise "white_noise"
+#define cer0_name_signal_sine_alice "sine_alice"
 
 enum cer0_signal {
   sawtooth_down,
@@ -18,19 +20,46 @@ enum cer0_signal {
   sine,
   square,
   triangle,
-  white_noise
+  white_noise,
+  sine_alice
 };
 
 typedef float (*cer0_signal_function)(float);
 
-float cer0_signal_sine(float);
-float cer0_signal_white_noise(float);
-float cer0_signal_sawtooth_up(float);
-float cer0_signal_sawtooth_down(float);
-float cer0_signal_square(float);
-float cer0_signal_triangle(float);
+float cer0_signal_sine(
+  float
+);
 
-extern char* cer0_signal_name_lookup[cer0_length_signals];
-extern cer0_signal_function cer0_signal_function_lookup[cer0_length_signals];
+float cer0_signal_sine_alice(
+  float phase
+);
+
+float cer0_signal_white_noise(
+  float
+);
+
+float cer0_signal_sawtooth_up(
+  float
+);
+
+float cer0_signal_sawtooth_down(
+  float
+);
+
+float cer0_signal_square(
+  float
+);
+
+float cer0_signal_triangle(
+  float
+);
+
+extern char* cer0_signal_name_lookup[
+  cer0_length_signals_extended
+];
+
+extern cer0_signal_function cer0_signal_function_lookup[
+  cer0_length_signals_extended
+];
 
 #endif
