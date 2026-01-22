@@ -21,6 +21,9 @@ directory_clic3=../../../clic3
 directory_clic3_include=${directory_clic3}/include
 directory_clic3_library=${directory_clic3}/library/macos/release
 
+directory_math_c=../../../math_c
+directory_math_c_include=${directory_math_c}/include
+
 version_target_cer0=0
 version_target_clic3=0
 
@@ -48,7 +51,7 @@ files_objects=${patsubst ${directory_sources}/%.c,${directory_objects}/%.o,${fil
 
 cc=clang
 c_flags_platform=-target ${target_platform} -isysroot ${directory_sdk}
-c_flags=-I${directory_include} -I${directory_cer0_include} ${c_flags_platform}
+c_flags=-I${directory_include} -I${directory_cer0_include} -I${directory_math_c_include} ${c_flags_platform}
 c_flags_output=-framework CoreAudio
 
 ifeq (${debug}, 1)

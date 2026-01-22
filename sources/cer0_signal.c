@@ -1,20 +1,19 @@
 #include <cer0_signal.h>
 #include <cer0_constants.h>
 
+#include <math_c_pi.h>
 #include <math_c_sine.h>
 
-#include <math.h>
 #include <stdint.h>
 #include <stdlib.h>
-
-#include <stdio.h>
 
 float cer0_signal_sine(
   float phase
 ) {
   return (
-    sin(
-      phase
+    math_c_sine(
+      phase,
+      math_c_pi
     )
   );
 }
@@ -40,7 +39,7 @@ float cer0_signal_sine_alice(
       calc[v] = (
         math_c_sine_alice(
           (float) v / 10000.0f,
-          M_PI
+          math_c_pi
         )
       );
     }
@@ -56,7 +55,7 @@ float cer0_signal_sine_alice(
     ] = (
       math_c_sine_alice(
         phase,
-        M_PI
+        math_c_pi
       )
     );
   }
@@ -107,7 +106,7 @@ float cer0_signal_square(
   float phase
 ) {
   if (
-    phase <= M_PI
+    phase <= math_c_pi
   ) {
     return 1.0f;
   } else {
