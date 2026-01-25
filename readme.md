@@ -8,6 +8,7 @@ c:implementation.of->{[`zer0`](https://github.com/alic3dev/zer0)};
 
 - [alic3dev](https://github.com/alic3dev)
 - - [clic3](https://github.com/alic3dev/clic3)
+- - [math_c](https://github.com/alic3dev/math_c)
 
 ### preprocessor_macros
 
