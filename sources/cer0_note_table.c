@@ -1,8 +1,9 @@
 #include <cer0_note_table.h>
 #include <cer0_octave_range.h>
 
+#include <clic3_memory.h>
+
 #include <math.h>
-#include <stdlib.h>
 
 float* cer0_note_table_stepped_create(
   char octave_starting,
@@ -20,12 +21,16 @@ float* cer0_note_table_stepped_create(
 
   static float* note_table;
 
-  note_table = malloc(
-    sizeof(float) *
-    cer0_note_table_stepped_length(
-      octave_starting,
-      octave_ending,
-      steps_notes
+  note_table = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        float
+      ) *
+      cer0_note_table_stepped_length(
+        octave_starting,
+        octave_ending,
+        steps_notes
+      )
     )
   );
 

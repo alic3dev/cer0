@@ -223,7 +223,8 @@ unsigned char cer0_audio_output_destroy(
     }
 
     result = (
-      result + 1
+      result +
+      1
     );
   }
 
