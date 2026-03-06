@@ -14,9 +14,9 @@ unsigned char cer0_audio_output_initialize(
   void* data_io_proc
 ) {
   static AudioObjectPropertyAddress audio_object_property_address = {
-    kAudioHardwarePropertyDefaultSystemOutputDevice,
-    kAudioObjectPropertyScopeOutput,
-    kAudioObjectPropertyElementMain
+    .mSelector = kAudioHardwarePropertyDefaultSystemOutputDevice,
+    .mScope = kAudioObjectPropertyScopeOutput,
+    .mElement = kAudioObjectPropertyElementMain
   };
 
   audio_output->audio_object_property_address = &audio_object_property_address;
@@ -34,16 +34,56 @@ unsigned char cer0_audio_output_initialize(
     kAudioObjectSystemObject,
     audio_output->audio_object_property_address,
     0,
-    (void*) 0,
+    0,
     &audio_output->device_size,
     &audio_output->device
   );
 
-  audio_output->sample_rate = 44100.0f;
+  AudioObjectPropertyAddress address_property_object_audio_rate_sample  = {
+    .mSelector = kAudioDevicePropertyActualSampleRate,
+    .mScope = kAudioObjectPropertyScopeOutput,
+    .mElement = kAudioObjectPropertyElementMain
+  };
+
+  unsigned char has_rate_sample = (
+    AudioObjectHasProperty(
+      audio_output->device,
+      &address_property_object_audio_rate_sample
+    )
+  );
+
+  if (
+    has_rate_sample != 0
+  ) {
+    double rate_sample_device;
+
+    unsigned int length_double = (
+      sizeof(
+        double
+      )
+    );
+
+    AudioObjectGetPropertyData(
+      audio_output->device,
+      &address_property_object_audio_rate_sample,
+      0,
+      0,
+      &length_double,
+      &rate_sample_device
+    );
+
+    audio_output->sample_rate = (
+      rate_sample_device
+    );
+  } else {
+    audio_output->sample_rate = (
+      44100.0f
+    );
+  }
 
   int status_device_start = AudioDeviceStart(
     audio_output->device,
-    (void*) 0
+    0
   );
 
   if (status_device_start != 0) {
