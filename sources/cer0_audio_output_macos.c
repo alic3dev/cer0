@@ -145,7 +145,7 @@ unsigned char cer0_audio_output_initialize(
   }
 
   return (
-    audio_output->io_proc_id == (void*) 0
+    audio_output->io_proc_id == 0
     ? 1
     : 0
   );
@@ -205,7 +205,7 @@ unsigned char cer0_audio_output_destroy(
 
   status_audio_device_stop = AudioDeviceStop(
     audio_output->device,
-    (void*) 0
+    0
   );
 
   if (

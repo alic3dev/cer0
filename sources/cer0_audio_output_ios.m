@@ -19,7 +19,7 @@ unsigned char cer0_audio_output_initialize(
   ];
 
   NSError* error = (
-    (void*) 0
+    0
   );
   
   [session_audio_shared 
@@ -30,7 +30,7 @@ unsigned char cer0_audio_output_initialize(
   ];
 
   if (
-    error != (void*) 0
+    error != 0
   ) {
     if (
       cer0_parameter_log_level != cer0_parameter_log_level_none
@@ -50,7 +50,7 @@ unsigned char cer0_audio_output_initialize(
   ];
 
   if (
-    error != (void*) 0
+    error != 0
   ) {
     if (
       cer0_parameter_log_level != cer0_parameter_log_level_none
@@ -127,7 +127,7 @@ unsigned char cer0_audio_output_initialize(
   ];
 
   if (
-    error != (void*) 0
+    error != 0
   ) {
     if (
       cer0_parameter_log_level != cer0_parameter_log_level_none
