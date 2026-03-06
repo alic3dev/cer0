@@ -3,7 +3,7 @@
 #include <cer0_oscillator.h>
 #include <cer0_signal.h>
 
-#include <stdlib.h>
+#include <clic3_memory.h>
 
 #define for_oscillators\
   for (\
@@ -20,9 +20,13 @@ void cer0_synthesizer_initialize(
   synthesizer->frequency = 0;
 
   synthesizer->length_oscillators = 0;
-  synthesizer->oscillators = malloc(
-    sizeof(struct cer0_oscillator) *
-    synthesizer->length_oscillators
+  synthesizer->oscillators = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        struct cer0_oscillator
+      ) *
+      synthesizer->length_oscillators
+    )
   );
 
   synthesizer->sample_rate = sample_rate;
@@ -36,10 +40,14 @@ void cer0_synthesizer_oscillator_add(
     synthesizer->length_oscillators + 1
   );
 
-  synthesizer->oscillators = realloc(
-    synthesizer->oscillators,
-    sizeof(struct cer0_oscillator) *
-    synthesizer->length_oscillators
+  clic3_memory_reallocate_raw(
+    &synthesizer->oscillators,
+    (
+      sizeof(
+        struct cer0_oscillator
+      ) *
+      synthesizer->length_oscillators
+    )
   );
 
   cer0_oscillator_initialize(
@@ -149,7 +157,7 @@ float cer0_synthesizer_poll(
 void cer0_synthesizer_destroy(
   struct cer0_synthesizer* synthesizer
 ) {
-  free(
+  clic3_memory_free_raw(
     synthesizer->oscillators
   );
 }

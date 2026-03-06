@@ -35,12 +35,12 @@ file_library_cer0=${directory_cer0_library}/cer0.${version_target_cer0}.dylib
 file_library_clic3=${directory_clic3_library}/clic3.${version_target_cer0}.dylib
 
 ifeq (${debug}, 1)
-	name:=${name}_debug
-	directory_objects=${directory_objects_base}/debug
-	directory_library:=${directory_library_debug}
-	directory_cer0_library:=${directory_cer0_library}_debug
-	file_library_cer0=${directory_cer0_library}/cer0_debug.${version_target_cer0}.dylib
-	file_output=${file_output_debug}
+name:=${name}_debug
+directory_objects=${directory_objects_base}/debug
+directory_library:=${directory_library_debug}
+directory_cer0_library:=${directory_cer0_library}_debug
+file_library_cer0=${directory_cer0_library}/cer0_debug.${version_target_cer0}.dylib
+file_output=${file_output_debug}
 endif
 
 directory_include=include
@@ -51,13 +51,13 @@ files_objects=${patsubst ${directory_sources}/%.c,${directory_objects}/%.o,${fil
 
 cc=clang
 c_flags_platform=-target ${target_platform} -isysroot ${directory_sdk}
-c_flags=-I${directory_include} -I${directory_cer0_include} -I${directory_math_c_include} ${c_flags_platform}
+c_flags=-I${directory_include} -I${directory_cer0_include} -I${directory_clic3_include} -I${directory_math_c_include} ${c_flags_platform}
 c_flags_output=-framework CoreAudio
 
 ifeq (${debug}, 1)
-	c_flags:=${c_flags} -O0 -g -v -da -Q
+c_flags:=${c_flags} -O0 -g -v -da -Q
 else
-	c_flags:=${c_flags} -O3
+c_flags:=${c_flags} -O3
 endif
 
 ${name}: ${file_output}
@@ -67,7 +67,7 @@ run: ${file_output}
 
 ${file_output}: ${files_objects} ${file_library_cer0}
 	mkdir -p ${directory_output}
-	${cc} ${c_flags} ${c_flags_output} ${files_objects} ${file_library_cer0} -o ${file_output}
+	${cc} ${c_flags} ${c_flags_output} ${files_objects} ${file_library_cer0} ${file_library_clic3} -o ${file_output}
 	-rm ${directory_output}/cer0.${version_target_cer0}.dylib
 	-rm ${directory_output}/clic3.${version_target_clic3}.dylib
 	ln -s ${file_library_cer0} ${directory_output}/cer0.${version_target_cer0}.dylib

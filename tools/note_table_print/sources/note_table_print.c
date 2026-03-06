@@ -2,8 +2,9 @@
 
 #include <cer0.h>
 
+#include <clic3_memory.h>
+
 #include <stdio.h>
-#include <stdlib.h>
 
 int main(
   int argc,
@@ -78,7 +79,9 @@ int main(
 
   printf("\n]\n");
 
-  free(note_table);
+  clic3_memory_free_raw(
+    note_table
+  );
 
   return 0;
 }
