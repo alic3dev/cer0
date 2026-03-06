@@ -140,10 +140,14 @@ strip_flags=-x
 
 ${name}: ${file_library}
 
+ifeq (${target_os},macos)
 all: ${name} tools
 
 tools: ${file_library} .always
 	cd ${directory_tools} && make all
+else
+all: ${name}
+endif
 
 ${name}: ${file_library_dylib} ${file_library_dynamic} ${file_library_object} ${file_library_static}
 
