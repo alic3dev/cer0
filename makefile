@@ -13,8 +13,23 @@ target_os=ios
 endif
 
 ifneq (${target_os},macos)
-name:=${name}_${target_os}
+suffix_library_target_os=_${target_os}
+else
+suffix_library_target_os=
 endif
+
+ifeq (${debug}, 1)
+target_build=debug
+suffix_library_target_build=_${target_build}
+else
+target_build=release
+suffix_library_target_build=
+endif
+
+suffix_library_target=${suffix_library_target_os}${suffix_library_target_build}
+path_target:=${target_os}/${target_build}
+
+name:=${name}${suffix_library_target}
 
 version_major=0
 version_minor=0
@@ -28,56 +43,24 @@ version_target_math_c=0
 directory_objects_base=objects
 directory_library_base=library
 
-directory_library=${directory_library_base}/${target_os}/release
-directory_library_debug=${directory_library_base}/${target_os}/debug
-
-directory_objects=${directory_objects_base}/${target_os}/release
+directory_library=${directory_library_base}/${path_target}
+directory_objects=${directory_objects_base}/${path_target}
 
 directory_clic3=../clic3
-directory_clic3_library=${directory_clic3}/library/${target_os}/release
+directory_clic3_library=${directory_clic3}/library/${path_target}
 directory_clic3_include=${directory_clic3}/include
 
 directory_math_c=../math_c
-directory_math_c_library=${directory_math_c}/library/${target_os}/release
+directory_math_c_library=${directory_math_c}/library/${path_target}
 directory_math_c_include=${directory_math_c}/include
 
 directory_install=/System/Volumes/Preboot/Cryptexes
 
-ifeq (${target_os},macos)
-file_library_clic3_dylib=${directory_clic3_library}/clic3.${version_target_clic3}.dylib
-file_library_clic3_dynamic=${directory_clic3_library}/clic3.${version_target_clic3}.so
+file_library_clic3_dylib=${directory_clic3_library}/clic3${suffix_library_target}.${version_target_clic3}.dylib
+file_library_clic3_dynamic=${directory_clic3_library}/clic3${suffix_library_target}.${version_target_clic3}.so
 
-file_library_math_c_dylib=${directory_math_c_library}/math_c.${version_target_math_c}.dylib
-file_library_math_c_dynamic=${directory_math_c_library}/math_c.${version_target_math_c}.so
-else
-file_library_clic3_dylib=${directory_clic3_library}/clic3_${target_os}.${version_target_clic3}.dylib
-file_library_clic3_dynamic=${directory_clic3_library}/clic3_${target_os}.${version_target_clic3}.so
-
-file_library_math_c_dylib=${directory_math_c_library}/math_c_${target_os}.${version_target_math_c}.dylib
-file_library_math_c_dynamic=${directory_math_c_library}/math_c_${target_os}.${version_target_math_c}.so
-endif
-
-ifeq (${debug}, 1)
-name:=${name}_debug
-directory_objects=${directory_objects_base}/${target_os}/debug
-directory_library:=${directory_library_debug}
-directory_clic3_library=${directory_clic3}/library/${target_os}/debug
-directory_math_c_library=${directory_math_c}/library/${target_os}/debug
-
-ifeq (${target_os},macos)
-file_library_clic3_dylib=${directory_clic3_library}/clic3_debug.${version_target_clic3}.dylib
-file_library_clic3_dynamic=${directory_clic3_library}/clic3_debug.${version_target_clic3}.so
-
-file_library_math_c_dylib=${directory_math_c_library}/math_c_debug.${version_target_math_c}.dylib
-file_library_math_c_dynamic=${directory_math_c_library}/math_c_debug.${version_target_math_c}.so
-else
-file_library_clic3_dylib=${directory_clic3_library}/clic3_${target_os}_debug.${version_target_clic3}.dylib
-file_library_clic3_dynamic=${directory_clic3_library}/clic3_${target_os}_debug.${version_target_clic3}.so
-
-file_library_math_c_dylib=${directory_math_c_library}/math_c_${target_os}_debug.${version_target_math_c}.dylib
-file_library_math_c_dynamic=${directory_math_c_library}/math_c_${target_os}_debug.${version_target_math_c}.so
-endif
-endif
+file_library_math_c_dylib=${directory_math_c_library}/math_c${suffix_library_target}.${version_target_math_c}.dylib
+file_library_math_c_dynamic=${directory_math_c_library}/math_c${suffix_library_target}.${version_target_math_c}.so
 
 directory_objects_c=${directory_objects}/c
 directory_objects_obj_c=${directory_objects}/obj_c
@@ -139,9 +122,9 @@ c_flags:=${c_flags} -Dtarget_os_ios
 endif
 
 ifeq (${debug}, 1)
-	c_flags:=${c_flags} -O0 -g -v -da -Q
+c_flags:=${c_flags} -O0 -g -v
 else
-	c_flags:=${c_flags} -O3
+c_flags:=${c_flags} -O3
 endif
 
 c_flags_obj_c=${c_flags} -x objective-c -fmodules -fconstant-cfstrings
@@ -157,10 +140,14 @@ strip_flags=-x
 
 ${name}: ${file_library}
 
+ifeq (${target_os},macos)
 all: ${name} tools
 
 tools: ${file_library} .always
 	cd ${directory_tools} && make all
+else
+all: ${name}
+endif
 
 ${name}: ${file_library_dylib} ${file_library_dynamic} ${file_library_object} ${file_library_static}
 
@@ -181,8 +168,7 @@ ${file_library_dylib}: ${files_objects}
 ifneq (${debug}, 1)
 	${strip} ${strip_flags} ${file_library_dylib_major}
 endif
-	-rm ${file_library_dylib}
-	ln -s ${name_library_dylib_major} ${file_library_dylib}
+	if [[ ! -h ${file_library_dylib} ]]; then ln -s ${name_library_dylib_major} ${file_library_dylib}; fi
 
 ${file_library_dynamic}: ${files_objects}
 	mkdir -p ${directory_library}
@@ -190,8 +176,7 @@ ${file_library_dynamic}: ${files_objects}
 ifneq (${debug}, 1)
 	${strip} ${strip_flags} ${file_library_dynamic_major}
 endif
-	-rm ${file_library_dynamic}
-	ln -s ${name_library_dynamic_major} ${file_library_dynamic}
+	if [[ ! -h ${file_library_dynamic} ]]; then ln -s ${name_library_dynamic_major} ${file_library_dynamic}; fi
 
 ${file_library_object}: ${files_objects}
 	mkdir -p ${directory_library}
@@ -222,16 +207,13 @@ ${directory_objects_obj_c}/%_${target_os}.o: ${directory_sources}/%.m
 
 clean_all: clean clean_tools
 
-clean: clean_library clean_library_debug clean_objects
+clean: clean_library clean_objects
 
 clean_library:
-	-rm -r ${directory_library_base} 2> /dev/null
-
-clean_library_debug:
-	-rm -r ${directory_library_debug} 2> /dev/null
+	if [[ -d ${directory_library_base} ]]; then rm -r ${directory_library_base}; fi
 
 clean_objects:
-	-rm -r ${directory_objects_base} 2> /dev/null
+	if [[ -d ${directory_objects_base} ]]; then rm -r ${directory_objects_base}; fi
 
 clean_tools:
 	cd ${directory_tools} && make clean_all

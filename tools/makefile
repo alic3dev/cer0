@@ -16,4 +16,4 @@ clean/%: %
 	cd $< && make clean
 
 clean_output:
-	-rm -r ${directory_output} 2> /dev/null
+	if [[ -d ${directory_output} ]]; then rm -r ${directory_output}; fi
