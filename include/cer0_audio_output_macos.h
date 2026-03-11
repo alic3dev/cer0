@@ -16,14 +16,13 @@ typedef int (*cer0_audio_output_io_proc)(
 );
 
 struct cer0_audio_output {
-  AudioObjectPropertyAddress* audio_object_property_address;
-  
   AudioDeviceID device;
   unsigned int device_size;
 
   AudioDeviceIOProcID io_proc_id;
 
   cer0_audio_output_io_proc io_proc;
+  void* data_io_proc;
 
   float sample_rate;
 };
@@ -31,6 +30,13 @@ struct cer0_audio_output {
 unsigned char cer0_audio_output_initialize(
   struct cer0_audio_output*,
   cer0_audio_output_io_proc,
+  void*
+);
+
+int cer0_audio_output_changed_device(
+  unsigned int,
+  unsigned int,
+  const AudioObjectPropertyAddress*,
   void*
 );
 
