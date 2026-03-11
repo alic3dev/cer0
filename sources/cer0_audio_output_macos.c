@@ -9,34 +9,66 @@
 #include <sys/param.h>
 
 unsigned char cer0_audio_output_initialize(
-  struct cer0_audio_output* audio_output,
+  struct cer0_audio_output* cer0_audio_output,
   cer0_audio_output_io_proc io_proc,
   void* data_io_proc
 ) {
-  static AudioObjectPropertyAddress audio_object_property_address = {
-    .mSelector = kAudioHardwarePropertyDefaultSystemOutputDevice,
-    .mScope = kAudioObjectPropertyScopeOutput,
-    .mElement = kAudioObjectPropertyElementMain
+  AudioObjectPropertyAddress audio_object_property_address = {
+    .mSelector = (
+      kAudioHardwarePropertyDefaultOutputDevice
+    ),
+    .mScope = (
+      kAudioObjectPropertyScopeOutput
+    ),
+    .mElement = (
+      kAudioObjectPropertyElementMain
+    )
   };
 
-  audio_output->audio_object_property_address = &audio_object_property_address;
+  cer0_audio_output->device = (
+    kAudioDeviceUnknown
+  );
 
-  audio_output->device = kAudioDeviceUnknown;
-  audio_output->device_size = (
+  cer0_audio_output->device_size = (
     sizeof(
-      audio_output->device
+      cer0_audio_output->device
     )
   );
 
-  audio_output->io_proc = io_proc;
+  cer0_audio_output->io_proc = (
+    io_proc
+  );
+
+  cer0_audio_output->data_io_proc = (
+    data_io_proc
+  );
 
   AudioObjectGetPropertyData(
     kAudioObjectSystemObject,
-    audio_output->audio_object_property_address,
+    &audio_object_property_address,
     0,
     0,
-    &audio_output->device_size,
-    &audio_output->device
+    &cer0_audio_output->device_size,
+    &cer0_audio_output->device
+  );
+
+  AudioObjectPropertyAddress address_property_changed_device = {
+    .mSelector = (
+      kAudioHardwarePropertyDefaultOutputDevice
+    ),
+    .mScope = (
+      kAudioObjectPropertyScopeGlobal
+    ),
+    .mElement = (
+      kAudioObjectPropertyElementMain
+    )
+  };
+
+  AudioObjectAddPropertyListener(
+    kAudioObjectSystemObject,
+    &address_property_changed_device,
+    cer0_audio_output_changed_device,
+    cer0_audio_output
   );
 
   AudioObjectPropertyAddress address_property_object_audio_rate_sample  = {
@@ -47,7 +79,7 @@ unsigned char cer0_audio_output_initialize(
 
   unsigned char has_rate_sample = (
     AudioObjectHasProperty(
-      audio_output->device,
+      cer0_audio_output->device,
       &address_property_object_audio_rate_sample
     )
   );
@@ -64,7 +96,7 @@ unsigned char cer0_audio_output_initialize(
     );
 
     AudioObjectGetPropertyData(
-      audio_output->device,
+      cer0_audio_output->device,
       &address_property_object_audio_rate_sample,
       0,
       0,
@@ -72,17 +104,17 @@ unsigned char cer0_audio_output_initialize(
       &rate_sample_device
     );
 
-    audio_output->sample_rate = (
+    cer0_audio_output->sample_rate = (
       rate_sample_device
     );
   } else {
-    audio_output->sample_rate = (
+    cer0_audio_output->sample_rate = (
       44100.0f
     );
   }
 
   int status_device_start = AudioDeviceStart(
-    audio_output->device,
+    cer0_audio_output->device,
     0
   );
 
@@ -91,7 +123,7 @@ unsigned char cer0_audio_output_initialize(
       fprintf(
         stderr,
         "failed_to_start:device->{%i:%i}\n",
-        audio_output->device,
+        cer0_audio_output->device,
         status_device_start
       );
     }
@@ -100,10 +132,10 @@ unsigned char cer0_audio_output_initialize(
   }
 
   int status_create_io_proc_id = AudioDeviceCreateIOProcID(
-    audio_output->device,
-    audio_output->io_proc,
+    cer0_audio_output->device,
+    cer0_audio_output->io_proc,
     data_io_proc,
-    &audio_output->io_proc_id
+    &cer0_audio_output->io_proc_id
   );
 
   if (
@@ -123,8 +155,8 @@ unsigned char cer0_audio_output_initialize(
   }
 
   int status_audio_device_start = AudioDeviceStart(
-    audio_output->device,
-    audio_output->io_proc_id
+    cer0_audio_output->device,
+    cer0_audio_output->io_proc_id
   );
 
   if (
@@ -136,7 +168,7 @@ unsigned char cer0_audio_output_initialize(
       fprintf(
         stderr,
         "failed_to_start:[device|io_proc_id]->{[%i|%i]}\n",
-        audio_output->device,
+        cer0_audio_output->device,
         status_audio_device_start
       );
     }
@@ -145,90 +177,142 @@ unsigned char cer0_audio_output_initialize(
   }
 
   return (
-    audio_output->io_proc_id == 0
+    cer0_audio_output->io_proc_id == 0
     ? 1
     : 0
   );
 }
 
-unsigned char cer0_audio_output_destroy(
-  struct cer0_audio_output* audio_output
+int cer0_audio_output_changed_device(
+  unsigned int id_object_audio,
+  unsigned int length_addressess_property_object_audio,
+  const AudioObjectPropertyAddress* address_property_object_audio,
+  void* data_cer0_audio_output
 ) {
-  unsigned char result = 0;
+  struct cer0_audio_output* cer0_audio_output = (
+    data_cer0_audio_output
+  );
 
-  int status_audio_device_destroy_io_proc_id = AudioDeviceDestroyIOProcID(
-    audio_output->device,
-    audio_output->io_proc_id
+  cer0_audio_output_destroy(
+    cer0_audio_output
+  );
+
+  cer0_audio_output_initialize(
+    cer0_audio_output,
+    cer0_audio_output->io_proc,
+    cer0_audio_output->data_io_proc
+  );
+
+  return (
+    0x00
+  );
+}
+
+unsigned char cer0_audio_output_destroy(
+  struct cer0_audio_output* cer0_audio_output
+) {
+  unsigned char result = (
+    0x00
+  );
+
+  int status_audio_device_destroy_io_proc_id = (
+    AudioDeviceDestroyIOProcID(
+      cer0_audio_output->device,
+      cer0_audio_output->io_proc_id
+    )
   );
 
   if (
-    status_audio_device_destroy_io_proc_id != 0
+    status_audio_device_destroy_io_proc_id !=
+    0x00
   ) {
     if (
       cer0_parameter_log_level != cer0_parameter_log_level_none
     ) {
       fprintf(
         stderr,
-        "failed_to_destroy:io_proc_id->{%i}\n",
+        "failure_destroying_input_output_process->{%i}\n",
         status_audio_device_destroy_io_proc_id
       );
     }
 
     result = (
-      result + 1
+      result +
+      0x01
     );
   }
 
-  int status_audio_device_stop = AudioDeviceStop(
-    audio_output->device,
-    audio_output->io_proc_id
+  int status_audio_device_stop = (
+    AudioDeviceStop(
+      cer0_audio_output->device,
+      cer0_audio_output->io_proc_id
+    )
   );
 
   if (
-    status_audio_device_stop != 0
+    status_audio_device_stop !=
+    0x00
   ) {
     if (
       cer0_parameter_log_level != cer0_parameter_log_level_none
     ) {
       fprintf(
         stderr,
-        "failed_to_stop_:[device|io_proc_id]->{[%i|%i]}\n",
-        audio_output->device,
-        status_audio_device_stop
-      );
-    }
-
-    result = (
-      result + 1
-    );
-  }
-
-  status_audio_device_stop = AudioDeviceStop(
-    audio_output->device,
-    0
-  );
-
-  if (
-    status_audio_device_stop != 0
-  ) {
-    if (
-      cer0_parameter_log_level != cer0_parameter_log_level_none
-    ) {
-      fprintf(
-        stderr,
-        "Failed to stop device [%i]: %i\n",
-        audio_output->device,
+        "failure_stopping_device->{%i:%i}\n",
+        cer0_audio_output->device,
         status_audio_device_stop
       );
     }
 
     result = (
       result +
-      1
+      0x01
     );
   }
 
-  return result;
+  status_audio_device_stop = AudioDeviceStop(
+    cer0_audio_output->device,
+    0
+  );
+
+  if (
+    status_audio_device_stop !=
+    0x00
+  ) {
+    if (
+      cer0_parameter_log_level != cer0_parameter_log_level_none
+    ) {
+      fprintf(
+        stderr,
+        "failure_stopping_device->{%i:%i};\n",
+        cer0_audio_output->device,
+        status_audio_device_stop
+      );
+    }
+
+    result = (
+      result +
+      0x01
+    );
+  }
+
+  int status_unload = (
+    AudioHardwareUnload()
+  );
+
+  if (
+    status_unload !=
+    0x00
+  ) {
+    result = (
+      result +
+      0x01
+    );
+  }
+
+  return (
+    result
+  );
 }
 
 #endif
