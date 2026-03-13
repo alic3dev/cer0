@@ -21,8 +21,8 @@ unsigned char cer0_audio_output_initialize(
   NSError* error = (
     0
   );
-  
-  [session_audio_shared 
+
+  [session_audio_shared
     setCategory: AVAudioSessionCategoryPlayback
     mode:AVAudioSessionModeDefault
     options:AVAudioSessionCategoryOptionMixWithOthers
@@ -43,7 +43,7 @@ unsigned char cer0_audio_output_initialize(
 
     return 1;
   }
-  
+
   [session_audio_shared
     setActive: 1
     error: &error
@@ -63,7 +63,7 @@ unsigned char cer0_audio_output_initialize(
 
     return 1;
   }
-  
+
   audio_output->engine_audio = [
     [
       AVAudioEngine
@@ -71,7 +71,7 @@ unsigned char cer0_audio_output_initialize(
     ]
     init
   ];
-  
+
   AVAudioMixerNode* node_output = (
     audio_output->engine_audio.mainMixerNode
   );
