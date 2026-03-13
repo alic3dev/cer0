@@ -18,7 +18,7 @@ jobs:
       - name: git_initialization
         run: git config --global init.defaultBranch core
       - name: checkout_cer0
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: cer0
       - name: cache_restore_clic3
