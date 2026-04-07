@@ -1,0 +1,35 @@
+#include <cer0_mix_mode.h>
+
+float cer0_mix_mode_mix(
+  float input_dry,
+  float input_wet,
+  float mix,
+  enum cer0_mix_mode cer0_mix_mode
+) {
+  switch (
+    cer0_mix_mode
+  ) {
+    case cer0_mix_mode_balance: {
+      return (
+        (
+          input_dry *
+          (
+            1.0f -
+            mix
+          )
+        ) +
+        (
+          input_wet *
+          mix
+        )
+      );
+    }
+    default: {
+      break;
+    }
+  }
+
+  return (
+    input_dry
+  );
+}
