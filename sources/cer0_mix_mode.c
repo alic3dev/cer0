@@ -24,6 +24,16 @@ float cer0_mix_mode_mix(
         )
       );
     }
+    case cer0_mix_mode_wet: {
+      return (
+        input_wet
+      );
+    }
+    case cer0_mix_mode_dry: {
+      return (
+        input_dry
+      );
+    }
     default: {
       break;
     }
