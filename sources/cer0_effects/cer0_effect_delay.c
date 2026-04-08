@@ -1,0 +1,138 @@
+#include <cer0_effects/cer0_effect_delay.h>
+
+#include <cer0_effect.h>
+
+#include <clic3_memory.h>
+
+void cer0_effect_delay_initialize(
+  struct cer0_effect* cer0_effect_delay
+) {
+  cer0_effect_initialize(
+    cer0_effect_delay
+  );
+
+  cer0_effect_delay->data = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        struct cer0_effect_delay_data
+      )
+    )
+  );
+
+  struct cer0_effect_delay_data* cer0_effect_delay_data = (
+    cer0_effect_delay->data
+  );
+
+  cer0_effect_delay_data->length_frames_buffer = (
+    0x01ffff
+  );
+
+  cer0_effect_delay_data->frames_buffer = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        float
+      ) *
+      cer0_effect_delay_data->length_frames_buffer
+    )
+  );
+
+  cer0_effect_delay_data->index_frames_buffer = (
+    0x00
+  );
+
+  cer0_effect_delay_data->decay = (
+    0.5f
+  );
+
+  cer0_effect_delay->poll = (
+    cer0_effect_delay_poll
+  );
+
+  cer0_effect_delay->destroy = (
+    cer0_effect_delay->destroy
+  );
+}
+
+void cer0_effect_delay_length_frames_buffer_set(
+  struct cer0_effect* cer0_effect_delay,
+  unsigned int length_frames
+) {
+  struct cer0_effect_delay_data* cer0_effect_delay_data = (
+    cer0_effect_delay->data
+  );
+
+  cer0_effect_delay_data->length_frames_buffer = (
+    length_frames
+  );
+
+  clic3_memory_reallocate_raw(
+    &cer0_effect_delay_data->frames_buffer,
+    (
+      sizeof(
+        float
+      ) *
+      cer0_effect_delay_data->length_frames_buffer
+    )
+  );
+
+  if (
+    cer0_effect_delay_data->index_frames_buffer >=
+    cer0_effect_delay_data->length_frames_buffer
+  ) {
+    cer0_effect_delay_data->index_frames_buffer = (
+      cer0_effect_delay_data->index_frames_buffer %
+      cer0_effect_delay_data->length_frames_buffer
+    );
+  }
+}
+
+float cer0_effect_delay_poll(
+  struct cer0_effect* cer0_effect_delay,
+  unsigned char channel,
+  float value_input
+) {
+  struct cer0_effect_delay_data* cer0_effect_delay_data = (
+    cer0_effect_delay->data
+  );
+
+  cer0_effect_delay_data->frames_buffer[
+    cer0_effect_delay_data->index_frames_buffer
+  ] = (
+    cer0_effect_delay_data->frames_buffer[
+      cer0_effect_delay_data->index_frames_buffer
+    ] *
+    cer0_effect_delay_data->decay +
+    value_input
+  );
+
+  cer0_effect_delay_data->index_frames_buffer = (
+    (
+      cer0_effect_delay_data->index_frames_buffer +
+      0x01
+    ) %
+    cer0_effect_delay_data->length_frames_buffer
+  );
+
+  return (
+    cer0_effect_delay_data->frames_buffer[
+      cer0_effect_delay_data->index_frames_buffer
+    ]
+  );
+}
+
+
+void cer0_effect_delay_destroy(
+  struct cer0_effect* cer0_effect_delay
+) {
+  struct cer0_effect_delay_data* cer0_effect_delay_data = (
+    cer0_effect_delay->data
+  );
+
+  clic3_memory_free_raw(
+    cer0_effect_delay_data->frames_buffer
+  );
+
+  clic3_memory_free_raw(
+    cer0_effect_delay->data
+  );
+}
