@@ -1,6 +1,7 @@
 #ifndef __cer0_synthesizer_h
 #define __cer0_synthesizer_h
 
+#include <cer0_effect.h>
 #include <cer0_oscillator.h>
 #include <cer0_signal.h>
 
@@ -10,6 +11,9 @@ struct cer0_synthesizer {
 
   unsigned int length_oscillators;
   struct cer0_oscillator* oscillators;
+
+  struct cer0_effect** effects;
+  unsigned int length_effects;
 
   float sample_rate;
 };
@@ -22,6 +26,11 @@ void cer0_synthesizer_initialize(
 void cer0_synthesizer_oscillator_add(
   struct cer0_synthesizer*,
   enum cer0_signal
+);
+
+void cer0_synthesizer_effect_add(
+  struct cer0_synthesizer*,
+  struct cer0_effect*
 );
 
 void cer0_synthesizer_frequency_set(
