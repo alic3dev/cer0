@@ -36,6 +36,23 @@ void cer0_effect_delay_initialize(
     )
   );
 
+  for (
+    unsigned int index_frame = (
+      0x00
+    );
+    (
+      index_frame <
+      cer0_effect_delay_data->length_frames_buffer
+    );
+    ++index_frame
+  ) {
+    cer0_effect_delay_data->frames_buffer[
+      index_frame
+    ] = (
+      0.0f
+    );
+  }
+
   cer0_effect_delay_data->index_frames_buffer = (
     0x00
   );
@@ -61,6 +78,10 @@ void cer0_effect_delay_length_frames_buffer_set(
     cer0_effect_delay->data
   );
 
+  unsigned int length_frames_buffer_previous = (
+    cer0_effect_delay_data->length_frames_buffer
+  );
+
   cer0_effect_delay_data->length_frames_buffer = (
     length_frames
   );
@@ -74,6 +95,23 @@ void cer0_effect_delay_length_frames_buffer_set(
       cer0_effect_delay_data->length_frames_buffer
     )
   );
+
+  for (
+    unsigned int index_frame = (
+      length_frames_buffer_previous
+    );
+    (
+      index_frame <
+      cer0_effect_delay_data->length_frames_buffer
+    );
+    ++index_frame
+  ) {
+    cer0_effect_delay_data->frames_buffer[
+      index_frame
+    ] = (
+      0.0f
+    );
+  }
 
   if (
     cer0_effect_delay_data->index_frames_buffer >=
