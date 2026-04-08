@@ -84,8 +84,8 @@ file_library_dynamic_major=${directory_library}/${name_library_dynamic_major}
 
 file_library_static=${directory_library}/${name}.a
 
-files_sources_c=${wildcard ${directory_sources}/*.c}
-files_sources_obj_c=${wildcard ${directory_sources}/*.m}
+files_sources_c=${shell find ${directory_sources} -name "*.c"}
+files_sources_obj_c=${shell find ${directory_sources} -name "*.m"}
 
 files_objects_c=${patsubst ${directory_sources}/%.c,${directory_objects_c}/%.o,${files_sources_c}}
 files_objects_obj_c=${patsubst ${directory_sources}/%.m,${directory_objects_obj_c}/%.o,${files_sources_obj_c}}
