@@ -272,12 +272,19 @@ float cer0_synthesizer_poll(
     );
 
     synthesizer->index_attack_sustain_decay_release = (
-      (
-        synthesizer->index_attack_sustain_decay_release +
-        0x01
-      ) %
-      synthesizer->length_attack_sustain_decay_release
+      synthesizer->index_attack_sustain_decay_release +
+      0x01
     );
+
+    if (
+      synthesizer->index_attack_sustain_decay_release >=
+      synthesizer->length_attack_sustain_decay_release
+    ) {
+      synthesizer->index_attack_sustain_decay_release = (
+        synthesizer->length_attack_sustain_decay_release -
+        0x01
+      );
+    }
   }
 
   return (
