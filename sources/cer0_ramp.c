@@ -86,7 +86,7 @@ float cer0_ramp_poll_sine(
     0.5f
   ) {
     return (
-      percentage *
+      value *
       (
         0.5f +
         (
@@ -100,7 +100,7 @@ float cer0_ramp_poll_sine(
     );
   } else {
     return (
-      percentage *
+      value *
       sine /
       0x02
     );
