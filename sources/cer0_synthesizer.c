@@ -1,5 +1,7 @@
 #include <cer0_synthesizer.h>
+
 #include <cer0_amplitude.h>
+#include <cer0_attack_sustain_decay_release.h>
 #include <cer0_oscillator.h>
 #include <cer0_signal.h>
 
@@ -44,7 +46,20 @@ void cer0_synthesizer_initialize(
       ) *
       synthesizer->length_effects
     )
-  );}
+  );
+
+  synthesizer->length_attack_sustain_decay_release = (
+    0x00
+  );
+
+  synthesizer->index_attack_sustain_decay_release = (
+    0x00
+  );
+
+  cer0_attack_sustain_decay_release_parameters_initialize(
+    &synthesizer->attack_sustain_decay_release_parameters
+  );
+}
 
 void cer0_synthesizer_oscillator_add(
   struct cer0_synthesizer* synthesizer,
@@ -115,6 +130,20 @@ void cer0_synthesizer_frequency_set(
       synthesizer->frequency
     );
   }
+}
+
+void cer0_synthesizer_frequency_play(
+  struct cer0_synthesizer* synthesizer,
+  float frequency
+) {
+  synthesizer->index_attack_sustain_decay_release = (
+    0x00
+  );
+
+  cer0_synthesizer_frequency_set(
+    synthesizer,
+    frequency
+  );
 }
 
 void cer0_synthesizer_oscillator_frequency_set(
@@ -210,8 +239,57 @@ float cer0_synthesizer_poll(
     );
   }
 
+  float amplitude_attack_sustain_decay_release;
+
+  if (
+    synthesizer->length_attack_sustain_decay_release ==
+    0x00
+  ) {
+    amplitude_attack_sustain_decay_release = (
+      0x01
+    );
+  } else if (
+    synthesizer->length_attack_sustain_decay_release ==
+    0x01
+  ) {
+    amplitude_attack_sustain_decay_release = (
+      synthesizer->attack_sustain_decay_release_parameters.amplitude_release
+    );
+  } else {
+    amplitude_attack_sustain_decay_release = (
+      cer0_attack_sustain_decay_release_poll(
+        &synthesizer->attack_sustain_decay_release_parameters,
+        (
+          (float)
+          synthesizer->index_attack_sustain_decay_release /
+          (float)
+          (
+            synthesizer->length_attack_sustain_decay_release -
+            0x01
+          )
+        )
+      )
+    );
+
+    synthesizer->index_attack_sustain_decay_release = (
+      synthesizer->index_attack_sustain_decay_release +
+      0x01
+    );
+
+    if (
+      synthesizer->index_attack_sustain_decay_release >=
+      synthesizer->length_attack_sustain_decay_release
+    ) {
+      synthesizer->index_attack_sustain_decay_release = (
+        synthesizer->length_attack_sustain_decay_release -
+        0x01
+      );
+    }
+  }
+
   return (
     value_output *
+    amplitude_attack_sustain_decay_release *
     synthesizer->amplitude
   );
 }
