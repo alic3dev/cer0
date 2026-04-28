@@ -1,6 +1,7 @@
 #ifndef __cer0_synthesizer_h
 #define __cer0_synthesizer_h
 
+#include <cer0_attack_sustain_decay_release.h>
 #include <cer0_effect.h>
 #include <cer0_oscillator.h>
 #include <cer0_signal.h>
@@ -14,6 +15,11 @@ struct cer0_synthesizer {
 
   struct cer0_effect** effects;
   unsigned int length_effects;
+
+  struct cer0_attack_sustain_decay_release_parameters attack_sustain_decay_release_parameters;
+
+  unsigned long int length_attack_sustain_decay_release;
+  unsigned long int index_attack_sustain_decay_release; 
 
   float sample_rate;
 };
@@ -34,6 +40,11 @@ void cer0_synthesizer_effect_add(
 );
 
 void cer0_synthesizer_frequency_set(
+  struct cer0_synthesizer*,
+  float
+);
+
+void cer0_synthesizer_frequency_play(
   struct cer0_synthesizer*,
   float
 );
