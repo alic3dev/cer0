@@ -34,9 +34,8 @@ void cer0_synthesizer_oscillator_add(
   enum cer0_signal
 );
 
-void cer0_synthesizer_effect_add(
-  struct cer0_synthesizer*,
-  struct cer0_effect*
+struct cer0_effect* cer0_synthesizer_effect_add(
+  struct cer0_synthesizer*
 );
 
 void cer0_synthesizer_frequency_set(

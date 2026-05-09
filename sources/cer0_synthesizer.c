@@ -18,10 +18,18 @@ void cer0_synthesizer_initialize(
   struct cer0_synthesizer* synthesizer,
   float sample_rate
 ) {
-  synthesizer->amplitude = cer0_default_amplitude;
-  synthesizer->frequency = 0;
+  synthesizer->amplitude = (
+    cer0_default_amplitude
+  );
+  
+  synthesizer->frequency = (
+    0x00
+  );
 
-  synthesizer->length_oscillators = 0;
+  synthesizer->length_oscillators = (
+    0x00
+  );
+  
   synthesizer->oscillators = (
     clic3_memory_allocate_raw(
       sizeof(
@@ -82,7 +90,7 @@ void cer0_synthesizer_oscillator_add(
   cer0_oscillator_initialize(
     &synthesizer->oscillators[
       synthesizer->length_oscillators -
-      1
+      0x01
     ],
     synthesizer->sample_rate,
     synthesizer->frequency,
@@ -90,10 +98,13 @@ void cer0_synthesizer_oscillator_add(
   );
 }
 
-void cer0_synthesizer_effect_add(
-  struct cer0_synthesizer* cer0_synthesizer,
-  struct cer0_effect* cer0_effect
+struct cer0_effect* cer0_synthesizer_effect_add(
+  struct cer0_synthesizer* cer0_synthesizer
 ) {
+  unsigned int index_effect = (
+    cer0_synthesizer->length_effects
+  );
+
   cer0_synthesizer->length_effects = (
     cer0_synthesizer->length_effects +
     0x01
@@ -103,17 +114,26 @@ void cer0_synthesizer_effect_add(
     &cer0_synthesizer->effects,
     (
       sizeof(
-        struct cer0_effect*
+        void*
       ) *
       cer0_synthesizer->length_effects
     )
   );
 
   cer0_synthesizer->effects[
-    cer0_synthesizer->length_effects -
-    0x01
+    index_effect
   ] = (
-    cer0_effect
+    clic3_memory_allocate_raw(
+      sizeof(
+        struct cer0_effect
+      )
+    )
+  );
+
+  return (
+    cer0_synthesizer->effects[
+      index_effect
+    ]
   );
 }
 
@@ -204,7 +224,9 @@ void cer0_synthesizer_sample_rate_set(
 float cer0_synthesizer_poll(
   struct cer0_synthesizer* synthesizer
 ) {
-  float value_output = 0.0f;
+  float value_output = (
+    0x00
+  );
 
   for_oscillators {
     value_output = (
@@ -214,28 +236,8 @@ float cer0_synthesizer_poll(
           index_oscillator
         ]
       ) /
-      (float) synthesizer->length_oscillators
-    );
-  }
-
-  for (
-    unsigned int index_effect = (
-      0x00
-    );
-    (
-      index_effect <
-      synthesizer->length_effects
-    );
-    ++index_effect
-  ) {
-    value_output = (
-      cer0_effect_poll(
-        synthesizer->effects[
-          index_effect
-        ],
-        0x00,
-        value_output
-      )
+      (float)
+      synthesizer->length_oscillators
     );
   }
 
@@ -287,9 +289,34 @@ float cer0_synthesizer_poll(
     }
   }
 
+  value_output = (
+    value_output *
+    amplitude_attack_sustain_decay_release
+  );
+
+  for (
+    unsigned int index_effect = (
+      0x00
+    );
+    (
+      index_effect <
+      synthesizer->length_effects
+    );
+    ++index_effect
+  ) {
+    value_output = (
+      cer0_effect_poll(
+        synthesizer->effects[
+          index_effect
+        ],
+        0x00,
+        value_output
+      )
+    ); 
+  }
+
   return (
     value_output *
-    amplitude_attack_sustain_decay_release *
     synthesizer->amplitude
   );
 }
@@ -297,6 +324,33 @@ float cer0_synthesizer_poll(
 void cer0_synthesizer_destroy(
   struct cer0_synthesizer* synthesizer
 ) {
+  for (
+    unsigned int index_effect = (
+      0x00
+    );
+    (
+      index_effect <
+      synthesizer->length_effects
+    );
+    ++index_effect
+  ) {
+    cer0_effect_destroy(
+      synthesizer->effects[
+        index_effect
+      ]
+    );
+
+    clic3_memory_free_raw(
+      synthesizer->effects[
+        index_effect
+      ]
+    );
+  }
+
+  clic3_memory_free_raw(
+    synthesizer->effects
+  );
+
   clic3_memory_free_raw(
     synthesizer->oscillators
   );

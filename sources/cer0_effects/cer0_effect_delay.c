@@ -158,7 +158,6 @@ float cer0_effect_delay_poll(
   );
 }
 
-
 void cer0_effect_delay_destroy(
   struct cer0_effect* cer0_effect_delay
 ) {
