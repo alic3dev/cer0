@@ -9,9 +9,9 @@ enum cer0_effect_bit_crush_mode {
 };
 struct cer0_effect_bit_crush_data {
   unsigned char bits;
-  
+
   unsigned char mode;
-  
+
   unsigned int value_maximum;
 
   float range;

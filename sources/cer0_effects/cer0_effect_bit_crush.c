@@ -25,20 +25,21 @@ void cer0_effect_bit_crush_initialize(
   struct cer0_effect_bit_crush_data* cer0_effect_bit_crush_data = (
     cer0_effect_bit_crush->data
   );
-  
+
   cer0_effect_bit_crush_data->mode = (
     cer0_effect_bit_crush_mode_bits
   );
-  
+
   cer0_effect_bit_crush_data->range = (
     0x01
   );
-  
+
   cer0_effect_bit_crush_bits_set(
     cer0_effect_bit_crush,
     bits
   );
-      cer0_effect_bit_crush->poll = (
+
+  cer0_effect_bit_crush->poll = (
     cer0_effect_bit_crush_poll
   );
 }
@@ -54,7 +55,7 @@ void cer0_effect_bit_crush_mode_set(
   cer0_effect_bit_crush_data->mode = (
     cer0_effect_bit_crush_mode
   );
-  
+
   cer0_effect_bit_crush_bits_set(
     cer0_effect_bit_crush,
     cer0_effect_bit_crush_data->bits
@@ -68,15 +69,15 @@ void cer0_effect_bit_crush_bits_set(
   struct cer0_effect_bit_crush_data* cer0_effect_bit_crush_data = (
     cer0_effect_bit_crush->data
   );
-  
+
   cer0_effect_bit_crush_data->bits = (
     bits
   );
-  
+
   cer0_effect_bit_crush_data->value_maximum = (
     0x00
   );
-  
+
   for (
     unsigned char index_bit = (
       0x00
@@ -90,7 +91,7 @@ void cer0_effect_bit_crush_bits_set(
     switch (
       cer0_effect_bit_crush_data->mode
     ) {
-      case cer0_effect_bit_crush_mode_bits: {  
+      case cer0_effect_bit_crush_mode_bits: {
         cer0_effect_bit_crush_data->value_maximum = (
           (
             cer0_effect_bit_crush_data->value_maximum <<
@@ -98,14 +99,15 @@ void cer0_effect_bit_crush_bits_set(
           ) +
           0b00000001
         );
-        
+
         break;
       }
       case cer0_effect_bit_crush_mode_value: {
         cer0_effect_bit_crush_data->value_maximum = (
-          cer0_effect_bit_crush_data->value_maximum +          0b00000001
+          cer0_effect_bit_crush_data->value_maximum +
+          0b00000001
         );
-        
+
         break;
       }
     }
@@ -138,9 +140,10 @@ float cer0_effect_bit_crush_poll(
       )
     ) /
     (float)
-    cer0_effect_bit_crush_data->value_maximum  
+    cer0_effect_bit_crush_data->value_maximum
   );
-      wet_value = (
+
+  wet_value = (
     wet_value *
     (
       cer0_effect_bit_crush_data->range *
@@ -148,7 +151,8 @@ float cer0_effect_bit_crush_poll(
     ) -
     cer0_effect_bit_crush_data->range
   );
-  
+
   return (
     wet_value
-  );}
+  );
+}
