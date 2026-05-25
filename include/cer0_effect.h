@@ -21,7 +21,7 @@ struct cer0_effect {
 
   enum cer0_mix_mode mix_mode;
   float mix;
-  
+
   void* data;
 };
 
@@ -50,4 +50,3 @@ void cer0_effect_destroy_default(
 );
 
 #endif
-

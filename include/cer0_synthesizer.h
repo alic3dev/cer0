@@ -19,7 +19,7 @@ struct cer0_synthesizer {
   struct cer0_attack_sustain_decay_release_parameters attack_sustain_decay_release_parameters;
 
   unsigned long int length_attack_sustain_decay_release;
-  unsigned long int index_attack_sustain_decay_release; 
+  unsigned long int index_attack_sustain_decay_release;
 
   float sample_rate;
 };

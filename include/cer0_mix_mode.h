@@ -15,4 +15,3 @@ float cer0_mix_mode_mix(
 );
 
 #endif
-

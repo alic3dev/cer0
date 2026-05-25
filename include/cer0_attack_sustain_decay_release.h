@@ -28,5 +28,5 @@ void cer0_attack_sustain_decay_release_parameters_initialize(
 float cer0_attack_sustain_decay_release_poll(
   struct cer0_attack_sustain_decay_release_parameters*,
   float
-); 
+);
 #endif

@@ -88,7 +88,7 @@ float cer0_attack_sustain_decay_release_poll(
 
   float value_starting;
   float value_ending;
-  
+
   cer0_ramp_function_poll poll_ramp;
 
   if (
@@ -198,5 +198,5 @@ float cer0_attack_sustain_decay_release_poll(
       ),
       percentage_lifespan_conceptualized
     )
-  );  
+  );
 }

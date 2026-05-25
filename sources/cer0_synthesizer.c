@@ -21,7 +21,7 @@ void cer0_synthesizer_initialize(
   synthesizer->amplitude = (
     cer0_default_amplitude
   );
-  
+
   synthesizer->frequency = (
     0x00
   );
@@ -29,7 +29,7 @@ void cer0_synthesizer_initialize(
   synthesizer->length_oscillators = (
     0x00
   );
-  
+
   synthesizer->oscillators = (
     clic3_memory_allocate_raw(
       sizeof(
@@ -312,7 +312,7 @@ float cer0_synthesizer_poll(
         0x00,
         value_output
       )
-    ); 
+    );
   }
 
   return (

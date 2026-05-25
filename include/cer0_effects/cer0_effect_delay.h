@@ -32,4 +32,3 @@ void cer0_effect_delay_destroy(
 );
 
 #endif
-
