@@ -3,8 +3,8 @@
 
 #include <cer0_constants.h>
 
-#define cer0_length_signals 6
-#define cer0_length_signals_extended 7
+#define cer0_length_signals 0x06
+#define cer0_length_signals_extended 0x07
 
 #define cer0_name_signal_sawtooth_down "sawtooth_down"
 #define cer0_name_signal_sawtooth_up "sawtooth_up"
@@ -15,16 +15,18 @@
 #define cer0_name_signal_sine_alice "sine_alice"
 
 enum cer0_signal {
-  sawtooth_down,
-  sawtooth_up,
-  sine,
-  square,
-  triangle,
-  white_noise,
-  sine_alice
+  sawtooth_down = 0x00,
+  sawtooth_up   = 0x01,
+  sine          = 0x02,
+  square        = 0x03,
+  triangle      = 0x04,
+  white_noise   = 0x05,
+  sine_alice    = 0x06
 };
 
-typedef float (*cer0_signal_function)(float);
+typedef float (*cer0_signal_function)(
+  float
+);
 
 float cer0_signal_sine(
   float
