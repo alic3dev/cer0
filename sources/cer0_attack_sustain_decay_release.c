@@ -35,6 +35,10 @@ void cer0_attack_sustain_decay_release_parameters_initialize(
     0.5f
   );
 
+  cer0_attack_sustain_decay_release_parameters->amplitude_release = (
+    0x00
+  );
+
   cer0_attack_sustain_decay_release_parameters->poll_ramp_attack = (
     cer0_ramp_poll_sine_beginning_ending
   );
