@@ -18,20 +18,20 @@ jobs:
       - name: git_initialization
         run: git config --global init.defaultBranch core
       - name: checkout_cer0
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: cer0
       - name: cache_restore_clic3
         id: cache_restore_clic3
         if: ${{ env.enabled_caching == '1' && env.enabled_caching_clic3 == '1' }}
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: clic3
           key: ${{ env.key_cache_clic3 }}
       - name: cache_restore_math_c
         id: cache_restore_math_c
         if: ${{ env.enabled_caching == '1' && env.enabled_caching_math_c == '1' }}
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: math_c
           key: ${{ env.key_cache_math_c }}
@@ -72,14 +72,14 @@ jobs:
       - name: cache_save_clic3
         id: cache_save_clic3
         if: ${{ env.enabled_caching == '1' && env.enabled_caching_clic3 == '1' && steps.cache_restore_clic3.outputs.cache-hit != 'true' }}
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: clic3
           key: ${{ env.key_cache_clic3 }}
       - name: cache_save_math_c
         id: cache_save_math_c
         if: ${{ env.enabled_caching == '1' && env.enabled_caching_math_c == '1' && steps.cache_restore_math_c.outputs.cache-hit != 'true' }}
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: math_c
           key: ${{ env.key_cache_math_c }}
