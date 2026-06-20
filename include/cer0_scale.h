@@ -115,6 +115,16 @@ extern const unsigned char cer0_scale_notes_ukrainian_dorian[cer0_scale_length_u
 extern const unsigned char cer0_scale_notes_whole_tone[cer0_scale_length_whole_tone];
 extern const unsigned char cer0_scale_notes_yo[cer0_scale_length_yo];
 
+#define cer0_length_scales 0x38
+
+extern const unsigned char* cer0_scales_notes[
+  cer0_length_scales
+];
+
+extern const unsigned char cer0_scales_lengths[
+  cer0_length_scales
+];
+
 struct cer0_scale {
   const unsigned char* notes;
   unsigned char length;
