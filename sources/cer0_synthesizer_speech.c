@@ -13,13 +13,13 @@ void cer0_synthesier_speech_initialize(
     &cer0_synthesizer_speech->synthesizer,
     rate_sample
   );
-  
+
   cer0_synthesizer_speech->segments = (
     clic3_memory_allocate_raw(
       0x00
     )
   );
-  
+
   cer0_synthesizer_speech->length_segments = (
     0x00
   );
@@ -34,7 +34,7 @@ void cer0_synthesizer_speech_speak_segments(
     cer0_synthesizer_speech->length_segments +
     length_segments
   );
-  
+
   clic3_memory_reallocate_raw(
     &cer0_synthesizer_speech->segments,
     (
@@ -44,7 +44,7 @@ void cer0_synthesizer_speech_speak_segments(
       cer0_synthesizer_speech->length_segments
     )
   );
-  
+
   for (
     unsigned int index_segment = (
       0x00
@@ -95,7 +95,7 @@ void cer0_synthesizer_speech_segment_next(
     cer0_synthesizer_speech->length_segments -
     0x01
   );
-  
+
   for (
     unsigned int index_segment = (
       0x00
@@ -129,7 +129,7 @@ void cer0_synthesizer_speech_segment_next(
       )
     );
   }
-  
+
   clic3_memory_reallocate_raw(
     &cer0_synthesizer_speech->segments,
     (
@@ -155,7 +155,7 @@ void cer0_synthesizer_speech_destroy(
   cer0_synthesizer_destroy(
     &cer0_synthesizer_speech->synthesizer
   );
-  
+
   clic3_memory_free_raw(
     cer0_synthesizer_speech->segments
   );
