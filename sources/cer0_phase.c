@@ -6,22 +6,31 @@ void cer0_phase_initialize(
   float sample_rate,
   float frequency
 ) {
-  phase->frequency = frequency;
-  phase->sample_rate = sample_rate;
+  phase->frequency = (
+    frequency
+  );
+
+  phase->sample_rate = (
+    sample_rate
+  );
 
   cer0_phase_increment_set(
     phase
   );
 
-  phase->value = 0;
+  phase->value = (
+    0x00
+  );
 }
 
 void cer0_phase_poll(
   struct cer0_phase* phase
 ) {
-  phase->value = cer0_phase_advance(
-    phase->value,
-    phase->increment
+  phase->value = (
+    cer0_phase_advance(
+      phase->value,
+      phase->increment
+    )
   );
 }
 
@@ -29,7 +38,9 @@ void cer0_phase_frequency_set(
   struct cer0_phase* phase,
   float frequency
 ) {
-  phase->frequency = frequency;
+  phase->frequency = (
+    frequency
+  );
 
   cer0_phase_increment_set(
     phase
@@ -50,9 +61,11 @@ void cer0_phase_sample_rate_set(
 void cer0_phase_increment_set(
   struct cer0_phase* phase
 ) {
-  phase->increment = cer0_phase_get_increment(
-    phase->sample_rate,
-    phase->frequency
+  phase->increment = (
+    cer0_phase_get_increment(
+      phase->sample_rate,
+      phase->frequency
+    )
   );
 }
 
@@ -77,7 +90,8 @@ float cer0_phase_advance(
   );
 
   if (
-    value_phase >= cer0_two_pi
+    value_phase >=
+    cer0_two_pi
   ) {
     value_phase = (
       value_phase -
@@ -86,7 +100,8 @@ float cer0_phase_advance(
   }
 
   if (
-    value_phase < 0.0f
+    value_phase <
+    0x00
   ) {
     value_phase = (
       value_phase +
@@ -94,5 +109,7 @@ float cer0_phase_advance(
     );
   }
 
-  return value_phase;
+  return (
+    value_phase
+  );
 }

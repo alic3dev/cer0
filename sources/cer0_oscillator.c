@@ -9,12 +9,21 @@ void cer0_oscillator_initialize(
   float frequency,
   enum cer0_signal signal
 ) {
-  oscillator->amplitude = cer0_default_amplitude;
+  oscillator->amplitude = (
+    cer0_default_amplitude
+  );
+
+  oscillator->offset_frequency = (
+    0x00
+  );
 
   cer0_phase_initialize(
     &oscillator->phase,
     sample_rate,
-    frequency
+    (
+      frequency +
+      oscillator->offset_frequency
+    )
   );
 
   cer0_oscillator_signal_set(
@@ -29,6 +38,41 @@ void cer0_oscillator_frequency_set(
 ) {
   cer0_phase_frequency_set(
     &oscillator->phase,
+    (
+      frequency +
+      oscillator->offset_frequency
+    )
+  );
+}
+
+void cer0_oscillator_offset_frequency_set(
+  struct cer0_oscillator* cer0_oscillator,
+  float offset_frequency
+) {
+  cer0_oscillator->offset_frequency = (
+    offset_frequency
+  );
+
+  cer0_phase_frequency_set(
+    &cer0_oscillator->phase,
+    (
+      cer0_oscillator->phase.frequency +
+      cer0_oscillator->offset_frequency
+    )
+  );
+}
+
+void cer0_oscillator_frequency_with_offset_set(
+  struct cer0_oscillator* cer0_oscillator,
+  float frequency,
+  float offset_frequency
+) {
+  cer0_oscillator->offset_frequency = (
+    offset_frequency
+  );
+
+  cer0_oscillator_frequency_set(
+    cer0_oscillator,
     frequency
   );
 }
