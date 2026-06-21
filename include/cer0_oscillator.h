@@ -6,7 +6,10 @@
 
 struct cer0_oscillator {
   float amplitude;
+  float offset_frequency;
+
   struct cer0_phase phase;
+
   enum cer0_signal signal;
   cer0_signal_function signal_function;
 };
@@ -20,6 +23,17 @@ void cer0_oscillator_initialize(
 
 void cer0_oscillator_frequency_set(
   struct cer0_oscillator*,
+  float
+);
+
+void cer0_oscillator_offset_frequency_set(
+  struct cer0_oscillator*,
+  float
+);
+
+void cer0_oscillator_frequency_with_offset_set(
+  struct cer0_oscillator*,
+  float,
   float
 );
 
