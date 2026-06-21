@@ -3,7 +3,7 @@
 
 #include <clic3_memory.h>
 
-#include <math.h>
+#include <math_c_power.h>
 
 float* cer0_note_table_stepped_create(
   char octave_starting,
@@ -56,7 +56,7 @@ float* cer0_note_table_stepped_create(
         offset_octave_table +
         index_note
       ] = (
-          powf(
+          math_c_power_float(
             2.0f,
             (
               -57.0f + (float)(
