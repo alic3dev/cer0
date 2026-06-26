@@ -9,6 +9,7 @@
 struct cer0_synthesizer {
   float amplitude;
   float frequency;
+  float pan;
 
   unsigned int length_oscillators;
   struct cer0_oscillator* oscillators;
@@ -67,6 +68,13 @@ void cer0_synthesizer_oscillator_signal_set(
 
 float cer0_synthesizer_poll(
   struct cer0_synthesizer*
+);
+
+void cer0_synthesizer_poll_stereo(
+  struct cer0_synthesizer*,
+  float[
+    0x02
+  ]
 );
 
 void cer0_synthesizer_destroy(

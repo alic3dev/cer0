@@ -22,7 +22,7 @@ void cer0_pan_apply_stereo(
     ) *
     value
   );
-  
+
   result[
     0x01
   ] = (

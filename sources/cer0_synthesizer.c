@@ -3,6 +3,7 @@
 #include <cer0_amplitude.h>
 #include <cer0_attack_sustain_decay_release.h>
 #include <cer0_oscillator.h>
+#include <cer0_pan.h>
 #include <cer0_signal.h>
 
 #include <clic3_memory.h>
@@ -23,6 +24,10 @@ void cer0_synthesizer_initialize(
   );
 
   synthesizer->frequency = (
+    0x00
+  );
+
+  synthesizer->pan = (
     0x00
   );
 
@@ -318,6 +323,21 @@ float cer0_synthesizer_poll(
   return (
     value_output *
     synthesizer->amplitude
+  );
+}
+
+void cer0_synthesizer_poll_stereo(
+  struct cer0_synthesizer* cer0_synthesizer,
+  float result[
+    0x02
+  ]
+) {
+  cer0_pan_apply_stereo(
+    cer0_synthesizer_poll(
+      cer0_synthesizer
+    ),
+    cer0_synthesizer->pan,
+    result
   );
 }
 
