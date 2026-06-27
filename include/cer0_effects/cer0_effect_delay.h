@@ -4,16 +4,19 @@
 #include <cer0_effect.h>
 
 struct cer0_effect_delay_data {
-  float* frames_buffer;
+  float** frames_buffer;
   unsigned int length_frames_buffer;
 
-  unsigned int index_frames_buffer;
+  unsigned int* index_frames_buffer;
+  
+  unsigned char length_channels;
 
   float decay;
 };
 
 void cer0_effect_delay_initialize(
-  struct cer0_effect*
+  struct cer0_effect*,
+  unsigned char
 );
 
 void cer0_effect_delay_length_frames_buffer_set(
