@@ -126,26 +126,6 @@ void cer0_effect_delay_length_frames_buffer_set(
     length_frames
   );
 
-  clic3_memory_reallocate_raw(
-    &cer0_effect_delay_data->frames_buffer,
-    (
-      sizeof(
-        void*
-      ) *
-      cer0_effect_delay_data->length_channels
-    )
-  );
-
-  clic3_memory_reallocate_raw(
-    &cer0_effect_delay_data->index_frames_buffer,
-    (
-      sizeof(
-        unsigned int*
-      ) *
-      cer0_effect_delay_data->length_channels
-    )
-  );
-
   for (
     unsigned char index_channel = (
       0x00
@@ -168,6 +148,15 @@ void cer0_effect_delay_length_frames_buffer_set(
       )
     );
 
+    cer0_effect_delay_data->index_frames_buffer[
+      index_channel
+    ] = (
+      cer0_effect_delay_data->index_frames_buffer[
+        index_channel
+      ] %
+      cer0_effect_delay_data->length_frames_buffer
+    );
+
     for (
       unsigned int index_frame = (
         length_frames_buffer_previous
@@ -184,15 +173,6 @@ void cer0_effect_delay_length_frames_buffer_set(
         0x00
       );
     }
-
-    cer0_effect_delay_data->index_frames_buffer[
-      index_channel
-    ] = (
-      cer0_effect_delay_data->index_frames_buffer[
-        index_channel
-      ] %
-      cer0_effect_delay_data->length_frames_buffer
-    );
   }
 }
 
