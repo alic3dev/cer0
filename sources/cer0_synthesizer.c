@@ -226,7 +226,7 @@ void cer0_synthesizer_sample_rate_set(
   }
 }
 
-float cer0_synthesizer_poll(
+float cer0_synthesizer_poll_oscillators(
   struct cer0_synthesizer* synthesizer
 ) {
   float value_output = (
@@ -245,84 +245,205 @@ float cer0_synthesizer_poll(
       synthesizer->length_oscillators
     );
   }
+  
+  return (
+    value_output
+  );
+}
 
+float cer0_synthesizer_poll_attack_sustain_decay_release(
+  struct cer0_synthesizer* cer0_synthesizer
+) {
   float amplitude_attack_sustain_decay_release;
 
   if (
-    synthesizer->length_attack_sustain_decay_release ==
+    cer0_synthesizer->length_attack_sustain_decay_release ==
     0x00
   ) {
     amplitude_attack_sustain_decay_release = (
       0x01
     );
   } else if (
-    synthesizer->length_attack_sustain_decay_release ==
+    cer0_synthesizer->length_attack_sustain_decay_release ==
     0x01
   ) {
     amplitude_attack_sustain_decay_release = (
-      synthesizer->attack_sustain_decay_release_parameters.amplitude_release
+      cer0_synthesizer->attack_sustain_decay_release_parameters.amplitude_release
     );
   } else {
     amplitude_attack_sustain_decay_release = (
       cer0_attack_sustain_decay_release_poll(
-        &synthesizer->attack_sustain_decay_release_parameters,
+        &cer0_synthesizer->attack_sustain_decay_release_parameters,
         (
           (float)
-          synthesizer->index_attack_sustain_decay_release /
+          cer0_synthesizer->index_attack_sustain_decay_release /
           (float)
           (
-            synthesizer->length_attack_sustain_decay_release -
+            cer0_synthesizer->length_attack_sustain_decay_release -
             0x01
           )
         )
       )
     );
 
-    synthesizer->index_attack_sustain_decay_release = (
-      synthesizer->index_attack_sustain_decay_release +
+    cer0_synthesizer->index_attack_sustain_decay_release = (
+      cer0_synthesizer->index_attack_sustain_decay_release +
       0x01
     );
 
     if (
-      synthesizer->index_attack_sustain_decay_release >=
-      synthesizer->length_attack_sustain_decay_release
+      cer0_synthesizer->index_attack_sustain_decay_release >=
+      cer0_synthesizer->length_attack_sustain_decay_release
     ) {
-      synthesizer->index_attack_sustain_decay_release = (
-        synthesizer->length_attack_sustain_decay_release -
+      cer0_synthesizer->index_attack_sustain_decay_release = (
+        cer0_synthesizer->length_attack_sustain_decay_release -
         0x01
       );
     }
   }
-
-  value_output = (
-    value_output *
+  
+  return (
     amplitude_attack_sustain_decay_release
   );
+}
 
+float cer0_synthesizer_poll_oscillators_attack_sustain_decay_release(
+  struct cer0_synthesizer* cer0_synthesizer
+) {
+  return (
+    cer0_synthesizer_poll_oscillators(
+      cer0_synthesizer
+    ) *
+    cer0_synthesizer_poll_attack_sustain_decay_release(
+      cer0_synthesizer
+    )
+  );
+}
+
+float cer0_synthesizer_effects_apply(
+  struct cer0_synthesizer* cer0_synthesizer,
+  float value
+) {
   for (
     unsigned int index_effect = (
       0x00
     );
     (
       index_effect <
-      synthesizer->length_effects
+      cer0_synthesizer->length_effects
     );
     ++index_effect
   ) {
-    value_output = (
+    value = (
       cer0_effect_poll(
-        synthesizer->effects[
+        cer0_synthesizer->effects[
           index_effect
         ],
         0x00,
-        value_output
+        value
       )
     );
   }
 
   return (
-    value_output *
-    synthesizer->amplitude
+    value
+  );
+}
+
+void cer0_synthesizer_effects_apply_stereo(
+  struct cer0_synthesizer* cer0_synthesizer,
+  float value[
+    0x02
+  ]
+) {
+  for (
+    unsigned int index_effect = (
+      0x00
+    );
+    (
+      index_effect <
+      cer0_synthesizer->length_effects
+    );
+    ++index_effect
+  ) {
+    value[
+      0x00
+    ] = (
+      cer0_effect_poll(
+        cer0_synthesizer->effects[
+          index_effect
+        ],
+        0x00,
+        value[
+          0x00
+        ]
+      )
+    );
+    
+    value[
+      0x01
+    ] = (
+      cer0_effect_poll(
+        cer0_synthesizer->effects[
+          index_effect
+        ],
+        0x01,
+        value[
+          0x01
+        ]
+      )
+    );
+  }
+}
+
+float cer0_synthesizer_amplitude_apply(
+  struct cer0_synthesizer* cer0_synthesizer,
+  float value
+) {
+  return (
+    cer0_synthesizer->amplitude *
+    value
+  );
+}  
+
+void cer0_synthesizer_amplitude_apply_stereo(
+  struct cer0_synthesizer* cer0_synthesizer,
+  float value[
+    0x02
+  ]
+) {
+  value[
+    0x00
+  ] = (
+    cer0_synthesizer->amplitude *
+    value[
+      0x00
+    ]
+  );
+  
+  value[
+    0x01
+  ] = (
+    cer0_synthesizer->amplitude *
+    value[
+      0x01
+    ]
+  );
+} 
+
+float cer0_synthesizer_poll(
+  struct cer0_synthesizer* cer0_synthesizer
+) {
+  return (
+    cer0_synthesizer_amplitude_apply(
+      cer0_synthesizer,
+      cer0_synthesizer_effects_apply(
+        cer0_synthesizer,
+        cer0_synthesizer_poll_oscillators_attack_sustain_decay_release(
+          cer0_synthesizer
+        )
+      )
+    )
   );
 }
 
@@ -333,10 +454,20 @@ void cer0_synthesizer_poll_stereo(
   ]
 ) {
   cer0_pan_apply_stereo(
-    cer0_synthesizer_poll(
+    cer0_synthesizer_poll_oscillators_attack_sustain_decay_release(
       cer0_synthesizer
     ),
     cer0_synthesizer->pan,
+    result
+  );
+  
+  cer0_synthesizer_amplitude_apply_stereo(
+    cer0_synthesizer,
+    result
+  );
+  
+  cer0_synthesizer_effects_apply_stereo(
+    cer0_synthesizer,
     result
   );
 }
