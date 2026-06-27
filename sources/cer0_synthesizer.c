@@ -10,8 +10,13 @@
 
 #define for_oscillators\
   for (\
-    unsigned int index_oscillator = 0;\
-    index_oscillator < synthesizer->length_oscillators;\
+    unsigned int index_oscillator = (\
+      0x00\
+    );\
+    (\
+      index_oscillator <\
+      cer0_synthesizer->length_oscillators\
+    );\
     ++index_oscillator\
   )\
 
@@ -143,41 +148,43 @@ struct cer0_effect* cer0_synthesizer_effect_add(
 }
 
 void cer0_synthesizer_frequency_set(
-  struct cer0_synthesizer* synthesizer,
+  struct cer0_synthesizer* cer0_synthesizer,
   float frequency
 ) {
-  synthesizer->frequency = frequency;
+  cer0_synthesizer->frequency = (
+    frequency
+  );
 
   for_oscillators {
     cer0_synthesizer_oscillator_frequency_set(
-      synthesizer,
+      cer0_synthesizer,
       index_oscillator,
-      synthesizer->frequency
+      cer0_synthesizer->frequency
     );
   }
 }
 
 void cer0_synthesizer_frequency_play(
-  struct cer0_synthesizer* synthesizer,
+  struct cer0_synthesizer* cer0_synthesizer,
   float frequency
 ) {
-  synthesizer->index_attack_sustain_decay_release = (
+  cer0_synthesizer->index_attack_sustain_decay_release = (
     0x00
   );
 
   cer0_synthesizer_frequency_set(
-    synthesizer,
+    cer0_synthesizer,
     frequency
   );
 }
 
 void cer0_synthesizer_oscillator_frequency_set(
-  struct cer0_synthesizer* synthesizer,
+  struct cer0_synthesizer* cer0_synthesizer,
   unsigned int index_oscillator,
   float frequency
 ) {
   cer0_oscillator_frequency_set(
-    &synthesizer->oscillators[
+    &cer0_synthesizer->oscillators[
       index_oscillator
     ],
     frequency
@@ -185,12 +192,12 @@ void cer0_synthesizer_oscillator_frequency_set(
 }
 
 void cer0_synthesizer_signal_set(
-  struct cer0_synthesizer* synthesizer,
+  struct cer0_synthesizer* cer0_synthesizer,
   enum cer0_signal signal
 ) {
   for_oscillators {
     cer0_synthesizer_oscillator_signal_set(
-      synthesizer,
+      cer0_synthesizer,
       index_oscillator,
       signal
     );
@@ -211,23 +218,25 @@ void cer0_synthesizer_oscillator_signal_set(
 }
 
 void cer0_synthesizer_sample_rate_set(
-  struct cer0_synthesizer* synthesizer,
+  struct cer0_synthesizer* cer0_synthesizer,
   float sample_rate
 ) {
-  synthesizer->sample_rate = sample_rate;
+  cer0_synthesizer->sample_rate = (
+    sample_rate
+  );
 
   for_oscillators {
     cer0_oscillator_sample_rate_set(
-      &synthesizer->oscillators[
+      &cer0_synthesizer->oscillators[
         index_oscillator
       ],
-      synthesizer->sample_rate
+      cer0_synthesizer->sample_rate
     );
   }
 }
 
 float cer0_synthesizer_poll_oscillators(
-  struct cer0_synthesizer* synthesizer
+  struct cer0_synthesizer* cer0_synthesizer
 ) {
   float value_output = (
     0x00
@@ -237,17 +246,82 @@ float cer0_synthesizer_poll_oscillators(
     value_output = (
       value_output +
       cer0_oscillator_poll(
-        &synthesizer->oscillators[
+        &cer0_synthesizer->oscillators[
           index_oscillator
         ]
       ) /
       (float)
-      synthesizer->length_oscillators
+      cer0_synthesizer->length_oscillators
     );
   }
-  
+
   return (
     value_output
+  );
+}
+
+void cer0_synthesizer_poll_oscillators_stereo(
+  struct cer0_synthesizer* cer0_synthesizer,
+  float result[
+    0x02
+  ]
+) {
+  float value_oscillator[
+    0x02
+  ] = {
+    0x00,
+    0x00
+  };
+
+  for_oscillators {
+    cer0_oscillator_poll_stereo(
+      &cer0_synthesizer->oscillators[
+        index_oscillator
+      ],
+      value_oscillator
+    );
+
+    result[
+      0x00
+    ] = (
+      result[
+        0x00
+      ] +
+      value_oscillator[
+        0x00
+      ]
+    );
+
+    result[
+      0x01
+    ] = (
+      result[
+        0x01
+      ] +
+      value_oscillator[
+        0x01
+      ]
+    );
+  }
+
+  result[
+    0x00
+  ] = (
+    result[
+      0x00
+    ] /
+    (float)
+    cer0_synthesizer->length_oscillators
+  );
+
+  result[
+    0x01
+  ] = (
+    result[
+      0x01
+    ] /
+    (float)
+    cer0_synthesizer->length_oscillators
   );
 }
 
@@ -301,7 +375,7 @@ float cer0_synthesizer_poll_attack_sustain_decay_release(
       );
     }
   }
-  
+
   return (
     amplitude_attack_sustain_decay_release
   );
@@ -317,6 +391,42 @@ float cer0_synthesizer_poll_oscillators_attack_sustain_decay_release(
     cer0_synthesizer_poll_attack_sustain_decay_release(
       cer0_synthesizer
     )
+  );
+}
+
+void cer0_synthesizer_poll_oscillators_attack_sustain_decay_release_stereo(
+  struct cer0_synthesizer* cer0_synthesizer,
+  float result[
+    0x02
+  ]
+) {
+  cer0_synthesizer_poll_oscillators_stereo(
+    cer0_synthesizer,
+    result
+  );
+
+  float amplitude_attack_sustain_decay_release = (
+    cer0_synthesizer_poll_attack_sustain_decay_release(
+      cer0_synthesizer
+    )
+  );
+
+  result[
+    0x00
+  ] = (
+    result[
+      0x00
+    ] *
+    amplitude_attack_sustain_decay_release
+  );
+
+  result[
+    0x01
+  ] = (
+    result[
+      0x01
+    ] *
+    amplitude_attack_sustain_decay_release
   );
 }
 
@@ -379,7 +489,7 @@ void cer0_synthesizer_effects_apply_stereo(
         ]
       )
     );
-    
+
     value[
       0x01
     ] = (
@@ -404,7 +514,7 @@ float cer0_synthesizer_amplitude_apply(
     cer0_synthesizer->amplitude *
     value
   );
-}  
+}
 
 void cer0_synthesizer_amplitude_apply_stereo(
   struct cer0_synthesizer* cer0_synthesizer,
@@ -420,7 +530,7 @@ void cer0_synthesizer_amplitude_apply_stereo(
       0x00
     ]
   );
-  
+
   value[
     0x01
   ] = (
@@ -429,7 +539,7 @@ void cer0_synthesizer_amplitude_apply_stereo(
       0x01
     ]
   );
-} 
+}
 
 float cer0_synthesizer_poll(
   struct cer0_synthesizer* cer0_synthesizer
@@ -453,20 +563,22 @@ void cer0_synthesizer_poll_stereo(
     0x02
   ]
 ) {
-  cer0_pan_apply_stereo(
-    cer0_synthesizer_poll_oscillators_attack_sustain_decay_release(
-      cer0_synthesizer
-    ),
-    cer0_synthesizer->pan,
-    result
-  );
-  
-  cer0_synthesizer_amplitude_apply_stereo(
+  cer0_synthesizer_poll_oscillators_attack_sustain_decay_release_stereo(
     cer0_synthesizer,
     result
   );
-  
+
+  cer0_pan_apply_stereo_pan(
+    result,
+    cer0_synthesizer->pan
+  );
+
   cer0_synthesizer_effects_apply_stereo(
+    cer0_synthesizer,
+    result
+  );
+
+  cer0_synthesizer_amplitude_apply_stereo(
     cer0_synthesizer,
     result
   );

@@ -7,6 +7,7 @@
 struct cer0_oscillator {
   float amplitude;
   float offset_frequency;
+  float pan;
 
   struct cer0_phase phase;
 
@@ -49,6 +50,13 @@ void cer0_oscillator_signal_set(
 
 float cer0_oscillator_poll(
   struct cer0_oscillator*
+);
+
+void cer0_oscillator_poll_stereo(
+  struct cer0_oscillator*,
+  float[
+    0x02
+  ]
 );
 
 #endif

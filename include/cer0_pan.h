@@ -9,4 +9,11 @@ void cer0_pan_apply_stereo(
   ]
 );
 
+void cer0_pan_apply_stereo_pan(
+  float[
+    0x02
+  ],
+  float
+);
+
 #endif

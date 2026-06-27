@@ -70,12 +70,26 @@ float cer0_synthesizer_poll_oscillators(
   struct cer0_synthesizer*
 );
 
+void cer0_synthesizer_poll_oscillators_stereo(
+  struct cer0_synthesizer*,
+  float[
+    0x02
+  ]
+);
+
 float cer0_synthesizer_poll_attack_sustain_decay_release(
   struct cer0_synthesizer*
 );
 
 float cer0_synthesizer_poll_oscillators_attack_sustain_decay_release(
   struct cer0_synthesizer*
+);
+
+void cer0_synthesizer_poll_oscillators_attack_sustain_decay_release_stereo(
+  struct cer0_synthesizer*,
+  float[
+    0x02
+  ]
 );
 
 float cer0_synthesizer_effects_apply(

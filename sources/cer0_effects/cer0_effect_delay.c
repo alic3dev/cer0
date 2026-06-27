@@ -23,7 +23,7 @@ void cer0_effect_delay_initialize(
   struct cer0_effect_delay_data* cer0_effect_delay_data = (
     cer0_effect_delay->data
   );
-  
+
   cer0_effect_delay_data->length_channels = (
     length_channels
   );
@@ -31,7 +31,7 @@ void cer0_effect_delay_initialize(
   cer0_effect_delay_data->length_frames_buffer = (
     0x01ffff
   );
-  
+
   cer0_effect_delay_data->index_frames_buffer = (
     clic3_memory_allocate_raw(
       sizeof(
@@ -40,7 +40,7 @@ void cer0_effect_delay_initialize(
       cer0_effect_delay_data->length_channels
     )
   );
-  
+
   cer0_effect_delay_data->frames_buffer = (
     clic3_memory_allocate_raw(
       sizeof(
@@ -70,7 +70,7 @@ void cer0_effect_delay_initialize(
         cer0_effect_delay_data->length_frames_buffer
       )
     );
-    
+
     for (
       unsigned int index_frame = (
         0x00
@@ -89,7 +89,7 @@ void cer0_effect_delay_initialize(
         0x00
       );
     }
-    
+
     cer0_effect_delay_data->index_frames_buffer[
       index_channel
     ] = (
@@ -125,7 +125,7 @@ void cer0_effect_delay_length_frames_buffer_set(
   cer0_effect_delay_data->length_frames_buffer = (
     length_frames
   );
-  
+
   clic3_memory_reallocate_raw(
     &cer0_effect_delay_data->frames_buffer,
     (
@@ -135,7 +135,7 @@ void cer0_effect_delay_length_frames_buffer_set(
       cer0_effect_delay_data->length_channels
     )
   );
-  
+
   clic3_memory_reallocate_raw(
     &cer0_effect_delay_data->index_frames_buffer,
     (
@@ -167,7 +167,7 @@ void cer0_effect_delay_length_frames_buffer_set(
         cer0_effect_delay_data->length_frames_buffer
       )
     );
-  
+
     for (
       unsigned int index_frame = (
         length_frames_buffer_previous
@@ -183,7 +183,7 @@ void cer0_effect_delay_length_frames_buffer_set(
       ] = (
         0x00
       );
-    } 
+    }
 
     cer0_effect_delay_data->index_frames_buffer[
       index_channel
@@ -204,7 +204,7 @@ float cer0_effect_delay_poll(
   struct cer0_effect_delay_data* cer0_effect_delay_data = (
     cer0_effect_delay->data
   );
-  
+
   if (
     channel >
     (
@@ -264,7 +264,7 @@ void cer0_effect_delay_destroy(
   struct cer0_effect_delay_data* cer0_effect_delay_data = (
     cer0_effect_delay->data
   );
-  
+
   for (
     unsigned char index_channel = (
       0x00
@@ -285,7 +285,7 @@ void cer0_effect_delay_destroy(
   clic3_memory_free_raw(
     cer0_effect_delay_data->frames_buffer
   );
-  
+
   clic3_memory_free_raw(
     cer0_effect_delay_data->index_frames_buffer
   );

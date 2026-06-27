@@ -8,7 +8,7 @@ struct cer0_effect_delay_data {
   unsigned int length_frames_buffer;
 
   unsigned int* index_frames_buffer;
-  
+
   unsigned char length_channels;
 
   float decay;
