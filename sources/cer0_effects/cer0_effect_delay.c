@@ -216,6 +216,16 @@ float cer0_effect_delay_poll(
     cer0_effect_delay_data->decay +
     value_input
   );
+  
+  float value_wet = (
+    cer0_effect_delay_data->frames_buffer[
+      channel
+    ][
+      cer0_effect_delay_data->index_frames_buffer[
+        channel
+      ]
+    ]
+  );
 
   cer0_effect_delay_data->index_frames_buffer[
     channel
@@ -230,13 +240,7 @@ float cer0_effect_delay_poll(
   );
 
   return (
-    cer0_effect_delay_data->frames_buffer[
-      channel
-    ][
-      cer0_effect_delay_data->index_frames_buffer[
-        channel
-      ]
-    ]
+    value_wet
   );
 }
 
