@@ -5,18 +5,19 @@ unsigned int cer0_octave_range_get(
   char octave_ending
 ) {
   if (
-    octave_ending < octave_starting
+    octave_ending <
+    octave_starting
   ) {
     return (
       octave_starting -
       octave_ending +
-      1
+      0x01
     );
   }
 
   return (
     octave_ending -
     octave_starting +
-    1
+    0x01
   );
 }

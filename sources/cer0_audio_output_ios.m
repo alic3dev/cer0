@@ -19,21 +19,32 @@ unsigned char cer0_audio_output_initialize(
   ];
 
   NSError* error = (
-    0
+    0x00
   );
 
-  [session_audio_shared
-    setCategory: AVAudioSessionCategoryPlayback
-    mode:AVAudioSessionModeDefault
-    options:AVAudioSessionCategoryOptionMixWithOthers
-    error: &error
+  [
+    session_audio_shared
+    setCategory: (
+      AVAudioSessionCategoryPlayback
+    )
+    mode: (
+      AVAudioSessionModeDefault
+    )
+    options: (
+      AVAudioSessionCategoryOptionMixWithOthers
+    )
+    error: &(
+      error
+    )
   ];
 
   if (
-    error != 0
+    error !=
+    0x00
   ) {
     if (
-      cer0_parameter_log_level != cer0_parameter_log_level_none
+      cer0_parameter_log_level !=
+      cer0_parameter_log_level_none
     ) {
       fprintf(
         stderr,
@@ -41,19 +52,28 @@ unsigned char cer0_audio_output_initialize(
       );
     }
 
-    return 1;
+    return (
+      0x01
+    );
   }
 
-  [session_audio_shared
-    setActive: 1
-    error: &error
+  [
+    session_audio_shared
+    setActive: (
+      0x01
+    )
+    error: &(
+      error
+    )
   ];
 
   if (
-    error != 0
+    error !=
+    0x00
   ) {
     if (
-      cer0_parameter_log_level != cer0_parameter_log_level_none
+      cer0_parameter_log_level !=
+      cer0_parameter_log_level_none
     ) {
       fprintf(
         stderr,
@@ -61,7 +81,9 @@ unsigned char cer0_audio_output_initialize(
       );
     }
 
-    return 1;
+    return (
+      0x01
+    );
   }
 
   audio_output->engine_audio = [
@@ -78,10 +100,14 @@ unsigned char cer0_audio_output_initialize(
 
   AVAudioFormat* format_output = [
     node_output
-    inputFormatForBus: 0
+    inputFormatForBus: (
+      0x00
+    )
   ];
 
-  audio_output->io_proc = io_proc;
+  audio_output->io_proc = (
+    io_proc
+  );
 
   audio_output->sample_rate = (
     format_output.sampleRate
@@ -92,7 +118,9 @@ unsigned char cer0_audio_output_initialize(
       AVAudioSourceNode
       alloc
     ]
-    initWithFormat: format_output
+    initWithFormat: (
+      format_output
+    )
     renderBlock: ^int(
       bool* _Nonnull silence,
       const AudioTimeStamp* _Nonnull timestamp,
@@ -127,10 +155,12 @@ unsigned char cer0_audio_output_initialize(
   ];
 
   if (
-    error != 0
+    error !=
+    0x00
   ) {
     if (
-      cer0_parameter_log_level != cer0_parameter_log_level_none
+      cer0_parameter_log_level !=
+      cer0_parameter_log_level_none
     ) {
       fprintf(
         stderr,
@@ -138,20 +168,27 @@ unsigned char cer0_audio_output_initialize(
       );
     }
 
-    return 1;
+    return (
+      0x01
+    );
   }
 
-  return 0;
+  return (
+    0x00
+  );
 }
 
 unsigned char cer0_audio_output_destroy(
   struct cer0_audio_output* audio_output
 ) {
   [
-    audio_output->engine_audio stop
+    audio_output->engine_audio
+    stop
   ];
 
-  return 0;
+  return (
+    0x00
+  );
 }
 
 #endif

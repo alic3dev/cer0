@@ -14,7 +14,7 @@ float cer0_mix_mode_mix(
         (
           input_dry *
           (
-            1.0f -
+            0x01 -
             mix
           )
         ) +

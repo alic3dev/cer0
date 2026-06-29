@@ -81,7 +81,7 @@ float cer0_effect_distortion_poll(
 
   if (
     wet_value >
-    1.0f
+    0x01
   ) {
     wet_value = (
       wet_value -
@@ -90,7 +90,7 @@ float cer0_effect_distortion_poll(
     );
   } else if (
     wet_value <
-    -1.0f
+    -0x01
   ) {
     wet_value = (
       wet_value -

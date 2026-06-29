@@ -12,11 +12,20 @@ float* cer0_note_table_stepped_create(
   unsigned char steps_notes
 ) {
   if (
-    octave_ending < octave_starting
+    octave_ending <
+    octave_starting
   ) {
-    unsigned char octave_temporary_swap_value = octave_ending;
-    octave_ending = octave_starting;
-    octave_starting = octave_temporary_swap_value;
+    unsigned char octave_temporary_swap_value = (
+      octave_ending
+    );
+
+    octave_ending = (
+      octave_starting
+    );
+
+    octave_starting = (
+      octave_temporary_swap_value
+    );
   }
 
   static float* note_table;
@@ -35,8 +44,13 @@ float* cer0_note_table_stepped_create(
   );
 
   for (
-    char index_octave = octave_starting;
-    index_octave <= octave_ending;
+    char index_octave = (
+      octave_starting
+    );
+    (
+      index_octave <=
+      octave_ending
+    );
     ++index_octave
   ) {
     unsigned char offset_octave_table = (
@@ -48,8 +62,13 @@ float* cer0_note_table_stepped_create(
     );
 
     for (
-      unsigned char index_note = 0;
-      index_note < steps_notes;
+      unsigned char index_note = (
+        0x00
+      );
+      (
+        index_note <
+        steps_notes
+      );
       ++index_note
     ) {
       note_table[
@@ -57,19 +76,33 @@ float* cer0_note_table_stepped_create(
         index_note
       ] = (
           math_c_power_float(
-            2.0f,
+            0x02,
             (
-              -57.0f + (float)(
-                (((float) index_note) * (((float) cer0_steps_in_octave) / ((float) steps_notes))) +
-                (((float) index_octave) * ((float) cer0_steps_in_octave))
-              )
-            )  / ((float)cer0_steps_in_octave)
-          ) * frequency
+              (
+                -0x39 +
+                (float)
+                index_note *
+                (float)
+                cer0_steps_in_octave /
+                (float)
+                steps_notes +
+                (float)
+                index_octave *
+                (float)
+                cer0_steps_in_octave
+              )  /
+              (float)
+              cer0_steps_in_octave
+            )
+          ) *
+          frequency
       );
     }
   }
 
-  return note_table;
+  return (
+    note_table
+  );
 }
 
 float* cer0_note_table_create(

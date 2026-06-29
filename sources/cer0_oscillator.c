@@ -97,7 +97,10 @@ void cer0_oscillator_signal_set(
   struct cer0_oscillator* oscillator,
   enum cer0_signal signal
 ) {
-  oscillator->signal = signal;
+  oscillator->signal = (
+    signal
+  );
+
   oscillator->signal_function = (
     cer0_signal_function_lookup[
       oscillator->signal

@@ -46,8 +46,8 @@ unsigned char cer0_audio_output_initialize(
   AudioObjectGetPropertyData(
     kAudioObjectSystemObject,
     &audio_object_property_address,
-    0,
-    0,
+    0x00,
+    0x00,
     &cer0_audio_output->device_size,
     &cer0_audio_output->device
   );
@@ -72,9 +72,15 @@ unsigned char cer0_audio_output_initialize(
   );
 
   AudioObjectPropertyAddress address_property_object_audio_rate_sample  = {
-    .mSelector = kAudioDevicePropertyActualSampleRate,
-    .mScope = kAudioObjectPropertyScopeOutput,
-    .mElement = kAudioObjectPropertyElementMain
+    .mSelector = (
+      kAudioDevicePropertyActualSampleRate
+    ),
+    .mScope = (
+      kAudioObjectPropertyScopeOutput
+    ),
+    .mElement = (
+      kAudioObjectPropertyElementMain
+    )
   };
 
   unsigned char has_rate_sample = (
@@ -85,7 +91,8 @@ unsigned char cer0_audio_output_initialize(
   );
 
   if (
-    has_rate_sample != 0
+    has_rate_sample !=
+    0x00
   ) {
     double rate_sample_device;
 
@@ -98,8 +105,8 @@ unsigned char cer0_audio_output_initialize(
     AudioObjectGetPropertyData(
       cer0_audio_output->device,
       &address_property_object_audio_rate_sample,
-      0,
-      0,
+      0x00,
+      0x00,
       &length_double,
       &rate_sample_device
     );
@@ -115,11 +122,17 @@ unsigned char cer0_audio_output_initialize(
 
   int status_device_start = AudioDeviceStart(
     cer0_audio_output->device,
-    0
+    0x00
   );
 
-  if (status_device_start != 0) {
-    if (cer0_parameter_log_level != cer0_parameter_log_level_none) {
+  if (
+    status_device_start !=
+    0x00
+  ) {
+    if (
+      cer0_parameter_log_level !=
+      cer0_parameter_log_level_none
+    ) {
       fprintf(
         stderr,
         "failed_to_start:device->{%i:%i}\n",
@@ -128,21 +141,27 @@ unsigned char cer0_audio_output_initialize(
       );
     }
 
-    return 1;
+    return (
+      0x01
+    );
   }
 
-  int status_create_io_proc_id = AudioDeviceCreateIOProcID(
-    cer0_audio_output->device,
-    cer0_audio_output->io_proc,
-    data_io_proc,
-    &cer0_audio_output->io_proc_id
+  int status_create_io_proc_id = (
+    AudioDeviceCreateIOProcID(
+      cer0_audio_output->device,
+      cer0_audio_output->io_proc,
+      data_io_proc,
+      &cer0_audio_output->io_proc_id
+    )
   );
 
   if (
-    status_create_io_proc_id != 0
+    status_create_io_proc_id !=
+    0x00
   ) {
     if (
-      cer0_parameter_log_level != cer0_parameter_log_level_none
+      cer0_parameter_log_level !=
+      cer0_parameter_log_level_none
     ) {
       fprintf(
         stderr,
@@ -151,19 +170,25 @@ unsigned char cer0_audio_output_initialize(
       );
     }
 
-    return 1;
+    return (
+      0x01
+    );
   }
 
-  int status_audio_device_start = AudioDeviceStart(
-    cer0_audio_output->device,
-    cer0_audio_output->io_proc_id
+  int status_audio_device_start = (
+    AudioDeviceStart(
+      cer0_audio_output->device,
+      cer0_audio_output->io_proc_id
+    )
   );
 
   if (
-    status_audio_device_start != 0
+    status_audio_device_start !=
+    0x00
   ) {
     if (
-      cer0_parameter_log_level != cer0_parameter_log_level_none
+      cer0_parameter_log_level !=
+      cer0_parameter_log_level_none
     ) {
       fprintf(
         stderr,
@@ -173,13 +198,18 @@ unsigned char cer0_audio_output_initialize(
       );
     }
 
-    return 1;
+    return (
+      0x01
+    );
   }
 
   return (
-    cer0_audio_output->io_proc_id == 0
-    ? 1
-    : 0
+    (
+      cer0_audio_output->io_proc_id ==
+      0x00
+    )
+    ? 0x01
+    : 0x00
   );
 }
 
@@ -227,7 +257,8 @@ unsigned char cer0_audio_output_destroy(
     0x00
   ) {
     if (
-      cer0_parameter_log_level != cer0_parameter_log_level_none
+      cer0_parameter_log_level !=
+      cer0_parameter_log_level_none
     ) {
       fprintf(
         stderr,
@@ -254,7 +285,8 @@ unsigned char cer0_audio_output_destroy(
     0x00
   ) {
     if (
-      cer0_parameter_log_level != cer0_parameter_log_level_none
+      cer0_parameter_log_level !=
+      cer0_parameter_log_level_none
     ) {
       fprintf(
         stderr,
@@ -272,7 +304,7 @@ unsigned char cer0_audio_output_destroy(
 
   status_audio_device_stop = AudioDeviceStop(
     cer0_audio_output->device,
-    0
+    0x00
   );
 
   if (
@@ -280,7 +312,8 @@ unsigned char cer0_audio_output_destroy(
     0x00
   ) {
     if (
-      cer0_parameter_log_level != cer0_parameter_log_level_none
+      cer0_parameter_log_level !=
+      cer0_parameter_log_level_none
     ) {
       fprintf(
         stderr,

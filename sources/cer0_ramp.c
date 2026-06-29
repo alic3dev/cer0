@@ -162,7 +162,8 @@ float cer0_ramp_poll_sine_beginning(
 
   return (
     value *
-    sine /    0x02
+    sine /
+    0x02
   );
 }
 
