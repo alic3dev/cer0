@@ -18,40 +18,63 @@ float cer0_signal_sine(
   );
 }
 
-float calc[
-  70000
+unsigned char initialized_cache_sine_alice = (
+  0x00
+);
+
+float cache_sine_alice[
+  0x11170
 ];
-unsigned char i = 3;
 
 float cer0_signal_sine_alice(
   float phase
 ) {
-    unsigned int x = (
-    phase *
-    10000.0f
-  );
-
   if (
-    i == 3
+    initialized_cache_sine_alice ==
+    0x00
   ) {
-    for (unsigned int v = 0; v < 70000; ++v){
-      calc[v] = 3.0f;
-      calc[v] = (
+    for (
+      unsigned int index_cache_sine_alice = (
+        0x00
+      );
+      (
+        index_cache_sine_alice <
+        0x11170
+      );
+      ++index_cache_sine_alice
+    ){
+      cache_sine_alice[
+        index_cache_sine_alice
+      ] = (
         math_c_sine_alice(
-          (float) v / 10000.0f,
+          (
+            (float)
+            index_cache_sine_alice /
+            0x2710
+          ),
           math_c_pi
         )
       );
     }
 
-    i = 1;
+    initialized_cache_sine_alice = (
+      0x01
+    );
   }
 
+  unsigned int index_cache_sine_alice = (
+    phase *
+    0x2710
+  );
+
   if (
-    calc[x] > 2.0f
+    cache_sine_alice[
+      index_cache_sine_alice
+    ] >
+    0x02
   ) {
-    calc[
-      x
+    cache_sine_alice[
+      index_cache_sine_alice
     ] = (
       math_c_sine_alice(
         phase,
@@ -60,9 +83,11 @@ float cer0_signal_sine_alice(
     );
   }
 
-  return calc[
-    x
-  ];
+  return (
+    cache_sine_alice[
+      index_cache_sine_alice
+    ]
+  );
 }
 
 float cer0_signal_white_noise(
