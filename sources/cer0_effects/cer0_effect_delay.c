@@ -168,6 +168,8 @@ void cer0_effect_delay_length_frames_buffer_set(
       ++index_frame
     ) {
       cer0_effect_delay_data->frames_buffer[
+        index_channel
+      ][
         index_frame
       ] = (
         0x00
