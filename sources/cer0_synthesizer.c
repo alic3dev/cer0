@@ -84,7 +84,8 @@ void cer0_synthesizer_oscillator_add(
   enum cer0_signal signal
 ) {
   synthesizer->length_oscillators = (
-    synthesizer->length_oscillators + 1
+    synthesizer->length_oscillators +
+    0x01
   );
 
   clic3_memory_reallocate_raw(
